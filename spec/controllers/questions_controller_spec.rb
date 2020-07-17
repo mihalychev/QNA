@@ -27,7 +27,7 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'GET #new' do
     before { get :new }
-    
+
     it 'renders new view' do
       expect(response).to render_template :new
     end
@@ -109,7 +109,7 @@ RSpec.describe QuestionsController, type: :controller do
 
     it 'redirects to index' do
       delete :destroy, params: { id: question }
-      expect(response).to redirect_to question_path
+      expect(response).to redirect_to questions_path
     end
   end
 end
