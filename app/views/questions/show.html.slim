@@ -2,7 +2,7 @@ section
   h2= question.title
   p= question.body
   - if current_user.present? && current_user.id == question.user.id
-    = link_to "Delete question", question, method: 'delete', class: 'button button_delete'
+    = link_to "Delete question", question, method: 'delete', class: 'button button_delete-question'
 
 section
   h3= 'Answers:'
@@ -10,6 +10,8 @@ section
     - question.answers.each do |answer|
       li
         = answer.body
+        - if current_user.present? && answer.user_id == current_user.id
+          = link_to 'Delete answer', answer, method: 'delete', class: 'button button_delete-answer'
 
 - if current_user
   h3= 'Answer the question'

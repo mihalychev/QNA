@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   let(:question) { create(:question) }
+  let(:user) { create(:user) }
 
   describe 'GET #edit' do
     let(:answer) { create(:answer, question: question) }
@@ -13,6 +14,8 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'POST #create' do
+    before { login(user) }
+    
     context 'with valid attributes' do
       it 'saves a new answer in the database' do        
         expect { post :create, params: { answer: attributes_for(:answer), question_id: question } }.to change(question.answers, :count).by(1) 
@@ -62,7 +65,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'does not change answer' do
         answer.reload
-        expect(answer.body).to eq 'MyText'
+        expect(answer.body).to eq 'Answer body'
       end
 
       it 're-renders edit view' do

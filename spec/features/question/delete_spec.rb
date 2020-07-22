@@ -15,11 +15,11 @@ feature 'User can delete question' do
   scenario 'Authenticated user tries to delete question which belongs to another user' do
     sign_in(user2)
     visit question_path(question)
-    expect(page).to_not have_css 'button_delete'
+    expect(page).to_not have_css 'button_delete-question'
   end
 
   scenario 'Unauthenticated user tries to delete question' do
     visit question_path(question)
-    expect(page).to_not have_css 'button_delete'
+    expect(page).to_not have_css 'button_delete-question'
   end
 end

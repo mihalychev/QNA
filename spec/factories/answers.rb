@@ -4,7 +4,9 @@ FactoryBot.define do
   end
 
   factory :answer do
-    body { "MyText" }
+    body { "Answer body" }
+    question
+    user
 
     trait :invalid do
       body { nil }
@@ -14,5 +16,6 @@ FactoryBot.define do
   factory :rand_body_answer, class: Answer do
     body
     question
+    user
   end
 end
