@@ -1,2 +1,18 @@
-h2= question.title
-p= question.body
+section
+  h2= question.title
+  p= question.body
+
+section
+  h3= 'Answers:'
+  ul
+    - question.answers.each do |answer|
+      li
+        = answer.body
+
+- if current_user
+  h3= 'Answer the question'
+  = form_for [question, Answer.new], class: 'form', method: 'post', local: true do |f|
+    p
+      = f.label :body
+      = f.text_area :body
+    = f.submit 'Answer'

@@ -8,9 +8,9 @@ class AnswersController < ApplicationController
     @answer = @question.answers.new(answer_params)
 
     if @answer.save
-      redirect_to @question
+      redirect_to @question, notice: 'Your answer successfully added.'
     else
-      render :new
+      redirect_to @question, alert: "Body can't be blank"
     end
   end
 
