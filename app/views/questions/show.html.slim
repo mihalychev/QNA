@@ -1,6 +1,8 @@
 section
   h2= question.title
   p= question.body
+  - if current_user.present? && current_user.id == question.user.id
+    = link_to "Delete question", question, method: 'delete', class: 'button button_delete'
 
 section
   h3= 'Answers:'

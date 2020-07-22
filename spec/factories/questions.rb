@@ -6,6 +6,7 @@ FactoryBot.define do
   factory :question do
     title { "MyString" }
     body { "MyText" }
+    user
 
     trait :invalid do
       title { nil }
@@ -15,5 +16,6 @@ FactoryBot.define do
   factory :rand_title_question, class: Question do
     title
     body { "MyTesx" }
+    user
   end
 end
