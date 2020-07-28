@@ -4,8 +4,9 @@ feature 'User can answer the question', %q{
   As an authenticated user
   I'd like to be able to answer the community question
 } do
+
   given(:user) { create(:user) }
-  given(:question) { create(:question) }
+  given!(:question) { create(:question, user: user) }
 
   describe 'Authenticated user' do
     background do
@@ -13,20 +14,24 @@ feature 'User can answer the question', %q{
       visit question_path(question)
     end
 
-    scenario 'answers the question' do
+    scenario 'answers the question with valid data' do
       fill_in 'Body', with: 'Answer'
       click_on 'Answer'
       expect(page).to have_content 'Your answer successfully added.'
+      expect(page).to have_content 'Answer'
     end
 
-    scenario 'answers the question with errors' do
+    scenario 'answers the question with invalid data' do
+      fill_in 'Body', with: nil
       click_on 'Answer'
       expect(page).to have_content "Body can't be blank"
     end
   end
 
-  scenario 'Unauthenticated user tries to answer the question' do
-    visit question_path(question)
-    expect(page).to_not have_css 'form'
+  describe 'Unauthenticated user' do
+    it 'tries to answer the question' do
+      visit question_path(question)
+      expect(page).to_not have_content 'Answer the question'
+    end
   end
 end

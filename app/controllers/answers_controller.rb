@@ -1,5 +1,6 @@
 class AnswersController < ApplicationController
-  def new; end
+  before_action :authenticate_user!
+  before_action :find_answer, only: %i[ edit update destroy ]
 
   def edit; end
 
@@ -11,30 +12,32 @@ class AnswersController < ApplicationController
     if @answer.save
       redirect_to @question, notice: 'Your answer successfully added.'
     else
-      redirect_to @question, alert: "Body can't be blank"
+      render 'questions/show'
     end
   end
 
   def update
-    if answer.update(answer_params)
-      redirect_to answer.question
+    if @answer.update(answer_params)
+      redirect_to @answer.question
     else
       render :edit
     end
   end
 
   def destroy
-    answer.destroy
-    redirect_to answer.question
+    if current_user.author_of?(@answer)
+      @answer.destroy
+      redirect_to @answer.question
+    else
+      redirect_to @answer.question, alert: 'You can delete only your answer'
+    end
   end
 
   private
 
-  def answer
-    @answer ||= params[:id] ? Answer.find(params[:id]) : Answer.new
+  def find_answer
+    @answer = Answer.find(params[:id])
   end
-
-  helper_method :answer
 
   def answer_params
     params.require(:answer).permit(:body)
