@@ -5,7 +5,7 @@ feature 'User can view questions and answers' do
   given(:answer) { create(:answer, question: question) }
 
   scenario 'User views all questions' do
-    questions = create_list(:question, 3, :rand)
+    questions = create_list(:question, 3)
 
     visit questions_path
 
@@ -15,7 +15,7 @@ feature 'User can view questions and answers' do
   end
 
   scenario 'User views question answers' do    
-    question.answers = create_list(:answer, 3, :rand)
+    question.answers = create_list(:answer, 3)
 
     visit question_path(question)
     

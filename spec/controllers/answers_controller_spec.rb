@@ -89,7 +89,7 @@ RSpec.describe AnswersController, type: :controller do
   
         it 'does not change answer' do
           answer.reload
-          expect(answer.body).to eq 'Answer body'
+          expect(answer.body).to eq answer.body
         end
   
         it 're-renders edit view' do
@@ -115,7 +115,7 @@ RSpec.describe AnswersController, type: :controller do
         before { login(user) }
     
         it 'tries to delete the answer' do
-          expect { delete :destroy, params: { id: answer, question_id: question } }.to change(Answer, :count).by(-1)
+          expect { delete :destroy, params: { id: answer, question_id: question } }.to change(user.answers, :count).by(-1)
         end
     
         it 'redirects to question' do

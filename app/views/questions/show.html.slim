@@ -1,6 +1,6 @@
-section
-  h2= @question.title
-  p= @question.body
+section class="question"
+  h2 class='question__title'= @question.title
+  p class='question__body'= @question.body
   - if current_user&.author_of?(@question)
     = link_to "Delete question", @question, method: 'delete', class: 'button button_delete-question'
 
@@ -9,7 +9,7 @@ section
   ul
     - @question.answers.each do |answer|
       - if answer.persisted?
-        li
+        li class='answer'
           = answer.body
           - if current_user&.author_of?(answer)
             = link_to 'Delete answer', answer_path(answer), method: 'delete', class: 'button button_delete-answer'

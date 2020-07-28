@@ -17,8 +17,11 @@ feature 'User can answer the question', %q{
     scenario 'answers the question with valid data' do
       fill_in 'Body', with: 'Answer'
       click_on 'Answer'
+      
       expect(page).to have_content 'Your answer successfully added.'
-      expect(page).to have_content 'Answer'
+      within '.answer' do
+        expect(page).to have_content 'Answer'
+      end
     end
 
     scenario 'answers the question with invalid data' do

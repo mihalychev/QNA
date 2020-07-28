@@ -21,8 +21,12 @@ feature 'User can create question', %q{
       click_on 'Ask'
   
       expect(page).to have_content 'Your question successfully created.'
-      expect(page).to have_content 'Title'
-      expect(page).to have_content 'Body'
+      within '.question__title' do
+        expect(page).to have_content 'Title'
+      end
+      within '.question__body' do
+        expect(page).to have_content 'Body'
+      end
     end
   
     scenario 'asks a question with errors' do
