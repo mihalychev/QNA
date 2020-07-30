@@ -130,6 +130,11 @@ RSpec.describe AnswersController, type: :controller do
         it 'tries to delete the answer' do
           expect { delete :destroy, params: { id: answer, question_id: question } }.to_not change(Answer, :count)
         end
+
+        it 'redirects to question' do
+          delete :destroy, params: { id: answer }
+          expect(response).to redirect_to question
+        end
       end
     end
 
