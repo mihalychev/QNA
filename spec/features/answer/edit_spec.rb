@@ -32,7 +32,6 @@ feature 'User can edit his answer' do
         within "#answer-#{answer.id}" do
           fill_in 'Body', with: nil
           click_on 'Save'
-  
         end
         
         expect(page).to have_content "Body can't be blank"

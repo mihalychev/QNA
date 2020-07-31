@@ -32,7 +32,7 @@ feature 'User can answer the question', %q{
   end
 
   describe 'Unauthenticated user' do
-    it 'tries to answer the question' do
+    scenario 'tries to answer the question' do
       visit question_path(question)
       expect(page).to_not have_content 'Answer the question'
     end

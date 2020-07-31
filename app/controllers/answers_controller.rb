@@ -16,11 +16,9 @@ class AnswersController < ApplicationController
 
   def destroy
     if current_user.author_of?(@answer)
+      @question = @answer.question
       @answer.destroy
-    else
-      flash[:alert] = 'You can delete only your answer'
     end
-    redirect_to @answer.question
   end
 
   private

@@ -8,5 +8,5 @@
           = f.text_area :body
         = f.submit 'Save'
       = link_to 'Edit', '#', class: 'button button_edit-answer', data: { answer_id: answer.id }
-      = link_to 'Delete', answer, method: 'delete', class: 'button button_delete-answer'
+      = link_to 'Delete', answer, method: 'delete', remote: true, class: 'button button_delete-answer'
 

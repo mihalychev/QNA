@@ -5,13 +5,15 @@ feature 'User can delete answer' do
   given(:question) { create(:question) }
   given!(:answer) { create(:answer, user: user, question: question) }
 
-  describe 'Authenticated user' do
+  describe 'Authenticated user', js: true do
     given(:user2) { create(:user) }
 
     scenario 'tries to delete his own answer' do
       sign_in(user)
       visit question_path(question)
-      click_on 'Delete'
+      within "#answer-#{answer.id}" do
+        click_on 'Delete'     
+      end
       expect(page).to_not have_content answer.body
     end
   

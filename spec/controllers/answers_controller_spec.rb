@@ -73,7 +73,7 @@ RSpec.describe AnswersController, type: :controller do
           expect(answer.body).to eq answer.body
         end
   
-        it 're-renders edit view' do
+        it 'renders update view' do
           expect(response).to render_template :update
         end
       end
@@ -89,19 +89,19 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    describe 'Authenticated user' do
+    describe 'Authenticated user', js: true do
       let!(:answer) { create(:answer, question: question, user: user) }
   
       context 'author' do
         before { login(user) }
     
         it 'tries to delete the answer' do
-          expect { delete :destroy, params: { id: answer, question_id: question } }.to change(user.answers, :count).by(-1)
+          expect { delete :destroy, params: { id: answer, question_id: question }, format: :js }.to change(user.answers, :count).by(-1)
         end
     
-        it 'redirects to question' do
-          delete :destroy, params: { id: answer }
-          expect(response).to redirect_to question
+        it 'renders destroy view' do
+          delete :destroy, params: { id: answer }, format: :js
+          expect(response).to render_template :destroy
         end
       end
   
@@ -109,12 +109,12 @@ RSpec.describe AnswersController, type: :controller do
         before { login(user2) }
   
         it 'tries to delete the answer' do
-          expect { delete :destroy, params: { id: answer, question_id: question } }.to_not change(Answer, :count)
+          expect { delete :destroy, params: { id: answer, question_id: question }, format: :js }.to_not change(Answer, :count)
         end
 
-        it 'redirects to question' do
-          delete :destroy, params: { id: answer }
-          expect(response).to redirect_to question
+        it 'renders destroy view' do
+          delete :destroy, params: { id: answer }, format: :js
+          expect(response).to render_template :destroy
         end
       end
     end
