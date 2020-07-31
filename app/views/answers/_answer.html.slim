@@ -1,0 +1,12 @@
+- if answer.persisted?
+  li id="answer-#{answer.id}"
+    = answer.body
+    - if current_user&.author_of?(answer)
+      = form_with model: answer, class: 'hidden', method: 'patch', html: { id: "edit-answer-#{answer.id}" } do |f|
+        p
+          = f.label :body
+          = f.text_area :body
+        = f.submit 'Save'
+      = link_to 'Edit', '#', class: 'button button_edit-answer', data: { answer_id: answer.id }
+      = link_to 'Delete', answer, method: 'delete', class: 'button button_delete-answer'
+
