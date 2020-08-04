@@ -3,6 +3,10 @@ Rails.application.routes.draw do
   root to: 'questions#index'
 
   resources :questions, shallow: true, except: %i[ edit ] do
-    resources :answers, except: %i[index show new edit]
+    resources :answers, except: %i[index show new edit] do
+      member do
+        patch :best
+      end
+    end
   end
 end

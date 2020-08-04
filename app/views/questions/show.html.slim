@@ -6,7 +6,7 @@ section class='answers'
   .answer-errors
     = render 'shared/errors', resource: @answer
   ul class='answers__list'
-    = render @question.answers
+    = render @question.answers.sorted_answers(@question)
   - if current_user
     h3= 'Answer the question'
     = form_with model: [ @question, @answer ], class: 'form form_answer-create', method: 'post' do |f|

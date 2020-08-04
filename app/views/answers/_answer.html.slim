@@ -1,5 +1,7 @@
 - if answer.persisted?
-  li id="answer-#{answer.id}"
+  li class='answer' id="answer-#{answer.id}"
+    - if current_user&.author_of?(answer.question) && answer.best?
+      = 'BEST'
     = answer.body
     - if current_user&.author_of?(answer)
       = form_with model: answer, class: 'hidden', method: 'patch', html: { id: "edit-answer-#{answer.id}" } do |f|
@@ -9,4 +11,5 @@
         = f.submit 'Save'
       = link_to 'Edit', '#', class: 'button button_edit-answer', data: { answer_id: answer.id }
       = link_to 'Delete', answer, method: 'delete', remote: true, class: 'button button_delete-answer'
-
+    - if current_user&.author_of?(answer.question) && !answer.best?
+      = link_to 'Mark as best', best_answer_path(answer), method: 'patch', class: 'button button_best-answer', data: { answer_id: answer.id }, remote: true

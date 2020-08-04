@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-  let!(:question) { create(:question) }
   let(:user) { create(:user) }
   let(:user2) { create(:user) }
-  let(:answer) { create(:answer, question: question) }
+  let!(:question) { create(:question, user: user) }
+  let!(:answer) { create(:answer, question: question, user: user) }
 
   describe 'POST #create' do
     describe 'Authenticated user' do
@@ -41,12 +41,40 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
+  describe 'PATCH #best' do
+    describe 'Authenticated user' do
+      context 'author' do
+        before { login(user) }
+        it 'changes answer attributes' do
+          patch :best, params: { id: answer, format: :js }
+          answer.reload
+          expect(answer).to be_best
+        end
+      end
+
+      context 'not author' do
+        before { login(user2) }
+        it 'does not change answer' do
+          patch :best, params: { id: answer, format: :js }
+          answer.reload
+          expect(answer).to_not be_best
+        end
+      end
+    end
+
+    describe 'Unauthenticated user' do
+      it 'does not change answer' do
+        patch :best, params: { id: answer, answer: { best: true }, format: :js }
+        answer.reload
+        expect(answer).to_not be_best
+      end
+    end
+  end
+
   describe 'PATCH #update' do
-    describe 'Authenticated user', js: true do
+    describe 'Authenticated user' do
       before { login(user) }
-      
-      let!(:answer) { create(:answer, question: question) }
-  
+        
       context 'with valid attributes' do
         it 'assigns the requested answer to @answer' do
           patch :update, params: { id: answer, answer: attributes_for(:answer), format: :js }
@@ -89,7 +117,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    describe 'Authenticated user', js: true do
+    describe 'Authenticated user' do
       let!(:answer) { create(:answer, question: question, user: user) }
   
       context 'author' do
