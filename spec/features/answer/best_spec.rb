@@ -30,6 +30,9 @@ feature 'User can mark the answer as best' do
         end
 
         expect(page).to have_content('BEST', count: 1)
+        within ".answer:first-child" do
+          expect(page).to have_content('BEST')
+        end
       end
     end
 

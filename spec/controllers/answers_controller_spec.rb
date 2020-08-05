@@ -73,36 +73,48 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'PATCH #update' do
     describe 'Authenticated user' do
-      before { login(user) }
-        
-      context 'with valid attributes' do
-        it 'assigns the requested answer to @answer' do
-          patch :update, params: { id: answer, answer: attributes_for(:answer), format: :js }
-          expect(assigns(:answer)).to eq answer  
+      context 'author' do
+        before { login(user) }
+          
+        context 'with valid attributes' do
+          it 'assigns the requested answer to @answer' do
+            patch :update, params: { id: answer, answer: attributes_for(:answer), format: :js }
+            expect(assigns(:answer)).to eq answer  
+          end
+    
+          it 'changes answer attributes' do
+            patch :update, params: { id: answer, answer: { body: 'new body' }, format: :js }
+            answer.reload
+            expect(answer.body).to eq 'new body'
+          end
+    
+          it 'renders update view' do
+            patch :update, params: { id: answer, answer: attributes_for(:answer), format: :js }
+            expect(response).to render_template :update
+          end
         end
-  
-        it 'changes answer attributes' do
-          patch :update, params: { id: answer, answer: { body: 'new body' }, format: :js }
-          answer.reload
-          expect(answer.body).to eq 'new body'
-        end
-  
-        it 'renders update view' do
-          patch :update, params: { id: answer, answer: attributes_for(:answer), format: :js }
-          expect(response).to render_template :update
+    
+        context 'with invalid attributes' do
+          before { patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js }
+    
+          it 'does not change answer' do
+            answer.reload
+            expect(answer.body).to eq answer.body
+          end
+    
+          it 'renders update view' do
+            expect(response).to render_template :update
+          end
         end
       end
-  
-      context 'with invalid attributes' do
-        before { patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js }
-  
-        it 'does not change answer' do
+
+      context 'not author' do
+        before { login(user2) }
+
+        it 'does not change answer' do        
+          patch :update, params: { id: answer, answer: attributes_for(:answer) }, format: :js
           answer.reload
           expect(answer.body).to eq answer.body
-        end
-  
-        it 'renders update view' do
-          expect(response).to render_template :update
         end
       end
     end
@@ -117,9 +129,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    describe 'Authenticated user' do
-      let!(:answer) { create(:answer, question: question, user: user) }
-  
+    describe 'Authenticated user' do  
       context 'author' do
         before { login(user) }
     
