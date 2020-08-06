@@ -1,5 +1,5 @@
 $('.answer-errors').html('<%= render 'shared/errors', resource: @answer %>')
 
 <% if !@answer.errors.present? %>
-  $('.answers__list').html('<%= j render @question.answers.sorted_answers %>')
+  $("#answer-<%= @answer.id %>").html('<%= j render @answer %>')
 <% end %>

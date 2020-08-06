@@ -2,7 +2,7 @@
   li class='answer' id="answer-#{answer.id}"
     - if current_user&.author_of?(answer.question) && answer.best?
       = 'BEST'
-    = answer.body
+    p class='answer__body'= answer.body
     - if current_user&.author_of?(answer)
       = form_with model: answer, class: 'hidden', method: 'patch', html: { id: "edit-answer-#{answer.id}" } do |f|
         p

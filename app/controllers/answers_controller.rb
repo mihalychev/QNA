@@ -5,21 +5,31 @@ class AnswersController < ApplicationController
 
   def create
     @question = Question.find(params[:question_id])
-    @answer = @question.answers.new(answer_params)
-    @answer.user = current_user
-    flash[:notice] = 'Your answer successfully added.' if @answer.save
+    @answer = @question.answers.create(answer_params.merge(user: current_user))
   end
 
   def update
-    @answer.update(answer_params) if current_user.author_of?(@answer)
+    if current_user.author_of?(@answer)
+      @answer.update(answer_params)
+    else
+      head :forbidden
+    end
   end
 
   def best
-    @answer.set_best if current_user.author_of?(@question)
+    if current_user.author_of?(@question)
+      @answer.set_best
+    else
+      head :forbidden
+    end
   end
 
-  def destroy    
-    @answer.destroy if current_user.author_of?(@answer)
+  def destroy
+    if current_user.author_of?(@answer)
+      @answer.destroy
+    else
+      head :forbidden
+    end
   end
 
   private

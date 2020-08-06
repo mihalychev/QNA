@@ -126,11 +126,18 @@ RSpec.describe QuestionsController, type: :controller do
       end
 
       context 'not author' do
+        before { login(user2) }
+
         it 'does not change question' do
           patch :update, params: { id: question, question: attributes_for(:question) }, format: :js
           question.reload
           expect(question.title).to eq question.title
           expect(question.body).to eq question.body
+        end
+        
+        it 'returns a :forbidden status code' do
+          patch :update, params: { id: question, question: attributes_for(:question) }, format: :js
+          expect(response).to have_http_status(:forbidden)  
         end
       end
     end
