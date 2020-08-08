@@ -24,13 +24,11 @@ class QuestionsController < ApplicationController
     end
   end
 
-  def edit; end
-
   def update
-    if @question.update(question_params)
-      redirect_to @question
+    if current_user.author_of?(@question)
+      @question.update(question_params)
     else
-      render :edit
+      head :forbidden
     end
   end
 
@@ -39,7 +37,7 @@ class QuestionsController < ApplicationController
       @question.destroy
       redirect_to questions_path
     else
-      redirect_to questions_path
+      head :forbidden
     end
   end
 

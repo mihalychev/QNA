@@ -1,0 +1,12 @@
+h2 class='question__title'= @question.title
+p class='question__body'= @question.body
+.question-errors
+  = render 'shared/errors', resource: @question
+- if current_user&.author_of?(@question)
+  = form_with model: @question, class: 'hidden', method: 'patch', html: { id: "edit-question-#{@question.id}" } do |f|
+    p
+      = f.label :body
+      = f.text_area :body
+    = f.submit 'Save'
+  = link_to "Edit question", '#', class: 'button button_edit-question', data: { question_id: @question.id }
+  = link_to "Delete question", @question, method: 'delete', class: 'button button_delete-question'

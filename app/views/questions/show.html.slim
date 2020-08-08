@@ -1,25 +1,16 @@
-section class="question"
-  h2 class='question__title'= @question.title
-  p class='question__body'= @question.body
-  - if current_user&.author_of?(@question)
-    = link_to "Delete question", @question, method: 'delete', class: 'button button_delete-question'
+section class="question" id="question-#{@question.id}" 
+  = render @question
 
-section
+section class='answers'
   h3= 'Answers:'
-  ul
-    - @question.answers.each do |answer|
-      - if answer.persisted?
-        li class='answer'
-          = answer.body
-          - if current_user&.author_of?(answer)
-            = link_to 'Delete answer', answer_path(answer), method: 'delete', class: 'button button_delete-answer'
-
-= render 'shared/errors', resource: @answer
-
-- if current_user
-  h3= 'Answer the question'
-  = form_with model: [ @question, @answer ], class: 'form', method: 'post', remote: true do |f|
-    p
-      = f.label :body
-      = f.text_area :body
-    = f.submit 'Answer'
+  .answer-errors
+    = render 'shared/errors', resource: @answer
+  ul class='answers__list'
+    = render @question.answers.sorted_answers
+  - if current_user
+    h3= 'Answer the question'
+    = form_with model: [ @question, @answer ], class: 'form form_answer-create', method: 'post' do |f|
+      p
+        = f.label :body
+        = f.text_area :body
+      = f.submit 'Answer'
