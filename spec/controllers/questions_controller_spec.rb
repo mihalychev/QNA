@@ -174,10 +174,10 @@ RSpec.describe QuestionsController, type: :controller do
         it 'tries to delete question' do
           expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
         end
-
-        it 'redirects to index' do
+        
+        it 'returns a :forbidden status code' do
           delete :destroy, params: { id: question }
-          expect(response).to redirect_to questions_path
+          expect(response).to have_http_status(:forbidden)  
         end
       end
     end
