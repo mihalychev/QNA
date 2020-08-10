@@ -11,6 +11,9 @@
         p
           = f.label :body
           = f.text_area :body
+        p
+          = f.label :files
+          = f.file_field :files, multiple: true
         = f.submit 'Save'
       = link_to 'Edit', '#', class: 'button button_edit-answer', data: { answer_id: answer.id }
       = link_to 'Delete', answer, method: 'delete', remote: true, class: 'button button_delete-answer'
