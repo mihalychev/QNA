@@ -15,7 +15,7 @@ p class='question__body'= @question.body
       = f.text_area :body
     p
       = f.label :files
-      = f.file_field :files, multiple: true
+      = f.file_field :files, multiple: true, direct_upload: true
     - if @question.files.attached?
       - @question.files.each do |file|
         p class="file-#{file.id}"
