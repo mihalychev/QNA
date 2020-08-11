@@ -3,9 +3,10 @@
     - if current_user&.author_of?(answer.question) && answer.best?
       = 'BEST'
     p class='answer__body'= answer.body
-    - if @answer.files.attached?
-      - @answer.files.each do |file|
-        p= link_to file.filename.to_s, url_for(file)
+    - if answer.files.attached?
+      - answer.files.each do |file|
+        p class="file-#{file.id}"
+          = link_to file.filename.to_s, url_for(file)
     - if current_user&.author_of?(answer)
       = form_with model: answer, class: 'hidden', method: 'patch', html: { id: "edit-answer-#{answer.id}" } do |f|
         p
@@ -14,6 +15,11 @@
         p
           = f.label :files
           = f.file_field :files, multiple: true
+        - if answer.files.attached?
+          - answer.files.each do |file|
+            p class="file-#{file.id}"
+              = link_to file.filename.to_s, url_for(file)
+              = link_to "Delete file", attachment_path(file), method: 'delete', remote: true
         = f.submit 'Save'
       = link_to 'Edit', '#', class: 'button button_edit-answer', data: { answer_id: answer.id }
       = link_to 'Delete', answer, method: 'delete', remote: true, class: 'button button_delete-answer'

@@ -3,7 +3,8 @@ p class='question__body'= @question.body
 
 - if @question.files.attached?
   - @question.files.each do |file|
-    p= link_to file.filename.to_s, url_for(file)
+    p class="file-#{file.id}"
+      = link_to file.filename.to_s, url_for(file)
 
 .question-errors
   = render 'shared/errors', resource: @question
@@ -15,6 +16,11 @@ p class='question__body'= @question.body
     p
       = f.label :files
       = f.file_field :files, multiple: true
+    - if @question.files.attached?
+      - @question.files.each do |file|
+        p class="file-#{file.id}"
+          = link_to file.filename.to_s, url_for(file)
+          = link_to "Delete file", attachment_path(file), method: 'delete', remote: true
     = f.submit 'Save'
   = link_to "Edit question", '#', class: 'button button_edit-question', data: { question_id: @question.id }
   = link_to "Delete question", @question, method: 'delete', class: 'button button_delete-question'

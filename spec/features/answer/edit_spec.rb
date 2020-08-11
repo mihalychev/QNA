@@ -37,9 +37,9 @@ feature 'User can edit his answer' do
         expect(page).to have_content "Body can't be blank"
       end
 
-      scenario 'tries to edit his answer with attached file' do
+      scenario 'tries to attach files' do
         click_on "Edit"
-        
+
         within "#answer-#{answer.id}" do
           fill_in 'Body', with: 'Body'
           attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
@@ -47,6 +47,21 @@ feature 'User can edit his answer' do
   
           expect(page).to have_link 'rails_helper.rb'
           expect(page).to have_link 'spec_helper.rb'
+        end
+      end
+
+      scenario 'tries to delete attached files' do
+        within "#answer-#{answer.id}" do
+          click_on "Edit"
+          fill_in 'Body', with: 'Body'
+          attach_file 'File', "#{Rails.root}/spec/rails_helper.rb"
+          click_on 'Save'
+
+          click_on "Edit"
+          click_on "Delete file"
+          click_on 'Save'
+
+          expect(page).to_not have_content 'rails_helper.rb'
         end
       end
     end
