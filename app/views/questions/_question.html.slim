@@ -6,6 +6,13 @@ p class='question__body'= @question.body
     p class="file-#{file.id}"
       = link_to file.filename.to_s, url_for(file)
 
+- if @question.links.presence
+  .question__links
+    p Links:
+    ul
+      - @question.links.each do |link|
+        li= link_to link.name, link.url
+
 .question-errors
   = render 'shared/errors', resource: @question
 - if current_user&.author_of?(@question)
