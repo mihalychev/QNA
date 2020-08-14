@@ -10,8 +10,7 @@ feature 'User can add links to question' do
 
     fill_in 'Title', with: 'Title'
     fill_in 'Body', with: 'Body'
-
-    fill_in 'Link', with: 'Google'
+    fill_in 'Name', with: 'Google'
     fill_in 'Url', with: url
 
     click_on 'Ask'

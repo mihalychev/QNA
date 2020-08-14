@@ -7,11 +7,18 @@ p class='question__body'= @question.body
       = link_to file.filename.to_s, url_for(file)
 
 - if @question.links.presence
-  .question__links
+  .links
     p Links:
     ul
       - @question.links.each do |link|
-        li= link_to link.name, link.url
+        li id="link-#{link.id}"
+          - if link.gist?
+            = render 'link/gist_body', resource: link
+          -else
+            = link_to link.name, link.url
+            - if current_user&.author_of?(@question)
+              = link_to 'Delete', link, method: 'delete', remote: true
+
 
 .question-errors
   = render 'shared/errors', resource: @question
@@ -28,6 +35,7 @@ p class='question__body'= @question.body
         p class="file-#{file.id}"
           = link_to file.filename.to_s, url_for(file)
           = link_to "Delete file", attachment_path(file), method: 'delete', remote: true
+    = link_to_add_association 'add link', f, :links, partial: 'link_fields'
     = f.submit 'Save'
   = link_to "Edit question", '#', class: 'button button_edit-question', data: { question_id: @question.id }
   = link_to "Delete question", @question, method: 'delete', class: 'button button_delete-question'

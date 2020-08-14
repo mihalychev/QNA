@@ -1,0 +1,4 @@
+const links = $("#link-<%= @link.id %>").parents('.links')
+
+$("#link-<%= @link.id %>").remove()
+if (links.find('li').length == 0) links.remove()
