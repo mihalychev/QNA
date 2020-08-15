@@ -14,6 +14,7 @@ class QuestionsController < ApplicationController
   def new
     @question = Question.new
     @question.links.new
+    @question.build_reward
   end
 
   def create
