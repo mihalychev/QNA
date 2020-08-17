@@ -1,6 +1,10 @@
 h2 class='question__title'= @question.title
 p class='question__body'= @question.body
 
+- if @question.reward.presence
+  p= @question.reward.title
+  img src=url_for(@question.reward.image)
+
 - if @question.files.attached?
   - @question.files.each do |file|
     p class="file-#{file.id}"

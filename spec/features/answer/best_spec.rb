@@ -4,8 +4,9 @@ feature 'User can mark the answer as best' do
   given(:user) { create(:user) }
   given(:user2) { create(:user) }
   given(:question) { create(:question, user: user) }
-  given!(:answer) { create(:answer, question: question) }
-  given!(:answer2) { create(:answer, question: question) }
+  given!(:answer) { create(:answer, question: question, user: user) }
+  given!(:answer2) { create(:answer, question: question, user: user) }
+  given!(:reward) { create(:reward, question: question) }
 
   describe 'Authenticated user', js: true do
     describe 'author' do
@@ -17,7 +18,8 @@ feature 'User can mark the answer as best' do
       scenario 'tries to mark the answer as best' do
         within '.answer:first-child' do
           click_on 'Mark as best'
-          expect(page).to have_content 'BEST'      
+          expect(page).to have_content 'BEST' 
+          expect(user.rewards).to include(reward)     
         end
       end
   
