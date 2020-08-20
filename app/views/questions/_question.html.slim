@@ -1,10 +1,28 @@
 h2 class='question__title'= @question.title
 p class='question__body'= @question.body
 
+- if @question.reward.presence
+  p= @question.reward.title
+  img src=url_for(@question.reward.image)
+
 - if @question.files.attached?
   - @question.files.each do |file|
     p class="file-#{file.id}"
       = link_to file.filename.to_s, url_for(file)
+
+- if @question.links.presence
+  .links
+    p Links:
+    ul
+      - @question.links.each do |link|
+        li id="link-#{link.id}"
+          - if link.gist?
+            = render 'link/gist_body', resource: link
+          -else
+            = link_to link.name, link.url
+            - if current_user&.author_of?(@question)
+              = link_to 'Delete', link, method: 'delete', remote: true
+
 
 .question-errors
   = render 'shared/errors', resource: @question
@@ -21,6 +39,7 @@ p class='question__body'= @question.body
         p class="file-#{file.id}"
           = link_to file.filename.to_s, url_for(file)
           = link_to "Delete file", attachment_path(file), method: 'delete', remote: true
+    = link_to_add_association 'add link', f, :links, partial: 'link_fields'
     = f.submit 'Save'
   = link_to "Edit question", '#', class: 'button button_edit-question', data: { question_id: @question.id }
   = link_to "Delete question", @question, method: 'delete', class: 'button button_delete-question'

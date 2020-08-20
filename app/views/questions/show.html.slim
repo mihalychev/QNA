@@ -16,4 +16,7 @@ section class='answers'
       p
         = f.label :files
         = f.file_field :files, multiple: true, direct_upload: true
+
+      = render 'form_link', f: f
+
       = f.submit 'Answer'
