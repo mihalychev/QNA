@@ -1,5 +1,6 @@
 section class="question" id="question-#{@question.id}" 
   = render @question
+  = render 'shared/vote', resource: @question
 
 section class='answers'
   h3= 'Answers:'

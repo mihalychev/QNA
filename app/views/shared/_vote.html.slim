@@ -1,0 +1,19 @@
+- if user_signed_in? && !current_user&.author_of?(resource)
+  .vote
+    p class='vote__value'
+      = resource.total_votes
+    = link_to 'Up', polymorphic_path(resource, action: :vote_up),
+          method: :post,
+          remote: true,
+          data: { type: :json },
+          class: 'vote__up'
+    = link_to 'Unvote', polymorphic_path(resource, action: :unvote),
+          method: :delete,
+          remote: true,
+          data: { type: :json },
+          class: 'vote__unvote'
+    = link_to 'Down', polymorphic_path(resource, action: :vote_down),
+          method: :post,
+          remote: true,
+          data: { type: :json },
+          class: 'vote__down'

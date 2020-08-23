@@ -1,5 +1,7 @@
 - if answer.persisted?
   li class='answer' id="answer-#{answer.id}"
+    = render 'shared/vote', resource: answer
+
     - if current_user&.author_of?(answer.question) && answer.best?
       = 'BEST'
     p class='answer__body'= answer.body
