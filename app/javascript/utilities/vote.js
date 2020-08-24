@@ -9,4 +9,14 @@ $(document).on('turbolinks:load', () => {
     const error = e.detail[0]
     console.log(error)
   })
+
+  $('.vote__up, .vote__down').on('click', () => {
+    $('.vote__up, .vote__down').addClass('hidden')
+    $('.vote__unvote').removeClass('hidden')
+  })
+
+  $('.vote__unvote').on('click', () => {
+    $('.vote__up, .vote__down').removeClass('hidden')
+    $('.vote__unvote').addClass('hidden')
+  })
 })

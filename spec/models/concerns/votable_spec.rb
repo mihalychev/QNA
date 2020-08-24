@@ -9,7 +9,7 @@ shared_examples_for "votable" do
   it '#vote_up' do
     votable = create(model.to_s.underscore.to_sym)
     votable.vote_up(user)
-    expect(votable.votes.last.value).to eq 1
+    expect(votable.votes.order(created_at: :desc).first.value).to eq 1
   end
 
   it '#unvote' do
@@ -22,6 +22,6 @@ shared_examples_for "votable" do
   it '#vote_down' do
     votable = create(model.to_s.underscore.to_sym)
     votable.vote_down(user)
-    expect(votable.votes.last.value).to eq -1
+    expect(votable.votes.order(created_at: :desc).first.value).to eq -1
   end
 end
