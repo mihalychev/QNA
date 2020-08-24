@@ -20,6 +20,7 @@ feature 'User can vote for an answer' do
         within "#vote-answer-#{answer.id}" do
           click_on 'Up'
           expect(page).to_not have_content 'Up'
+          expect(page).to have_content 'Unvote'
           within('.vote__value') { expect(page).to have_content('1') }
         end
       end
@@ -28,6 +29,7 @@ feature 'User can vote for an answer' do
         within "#vote-answer-#{answer.id}" do
           click_on 'Down'
           expect(page).to_not have_content 'Down'
+          expect(page).to have_content 'Unvote'
           within('.vote__value') { expect(page).to have_content('-1') }
         end
       end
