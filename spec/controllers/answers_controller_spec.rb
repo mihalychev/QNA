@@ -1,6 +1,9 @@
 require 'rails_helper'
+require Rails.root.join("spec/controllers/concerns/voted_spec.rb")
 
 RSpec.describe AnswersController, type: :controller do
+  it_behaves_like 'voted'
+  
   let(:user) { create(:user) }
   let(:user2) { create(:user) }
   let!(:question) { create(:question, user: user) }
