@@ -1,4 +1,4 @@
-section class="question" id="question-#{@question.id}" 
+section class="question" id="question-#{@question.id}" data-question-id="#{@question.id}"
   = render @question
   = render 'shared/vote', resource: @question
 
