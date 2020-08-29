@@ -15,9 +15,11 @@ feature 'User can answer the question', %q{
     end
 
     scenario 'answers the question with valid data' do
-      fill_in 'Body', with: 'Answer'
-      click_on 'Answer'
-      
+      within ".form_answer-create" do
+        fill_in 'Body', with: 'Answer'
+        click_on 'Answer'
+      end
+
       expect(current_path).to eq question_path(question)
       within '.answers' do
         expect(page).to have_content 'Answer'
@@ -25,17 +27,21 @@ feature 'User can answer the question', %q{
     end
 
     scenario 'asks a question with attached file' do
-      fill_in 'Body', with: 'Answer'
-      attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
-      click_on 'Answer'
+      within ".form_answer-create" do
+        fill_in 'Body', with: 'Answer'
+        attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+        click_on 'Answer'
+      end
 
       expect(page).to have_link 'rails_helper.rb'
       expect(page).to have_link 'spec_helper.rb'
     end
 
     scenario 'answers the question with invalid data' do
-      fill_in 'Body', with: nil
-      click_on 'Answer'
+      within ".form_answer-create" do
+        fill_in 'Body', with: nil
+        click_on 'Answer'
+      end
       expect(page).to have_content "Body can't be blank"
     end
   end
@@ -59,8 +65,10 @@ feature 'User can answer the question', %q{
       end
 
       Capybara.using_session('user') do
-        fill_in 'Body', with: 'Answer'
-        click_on 'Answer'
+        within ".form_answer-create" do
+          fill_in 'Body', with: 'Answer'
+          click_on 'Answer'
+        end
 
         within '.answers' do
           expect(page).to have_content 'Answer'

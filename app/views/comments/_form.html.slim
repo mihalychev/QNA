@@ -1,0 +1,6 @@
+ = form_with model: [ commentable, comment ], method: 'post', class: 'form form_answer-comment-create' do |f|
+    p
+      = f.label :body
+      = f.text_area :body
+    
+    = f.submit 'Comment'
