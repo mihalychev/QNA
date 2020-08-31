@@ -15,10 +15,14 @@ Rails.application.routes.draw do
       member do
         patch :best
       end
+      resources :comments, only: %i[ create ]
     end
+    resources :comments, only: %i[ create ]
   end
 
   resources :attachments, only: %i[ destroy ]
   resources :links, only: %i[ destroy ]
   resources :rewards, only: %i[ index ]
+
+  mount ActionCable.server => '/cable'
 end

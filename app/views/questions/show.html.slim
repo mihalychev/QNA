@@ -1,6 +1,13 @@
-section class="question" id="question-#{@question.id}" 
+section class="question" id="question-#{@question.id}" data-question-id="#{@question.id}"
   = render @question
   = render 'shared/vote', resource: @question
+  .question__comments
+    .question-comment-errors
+      = render 'shared/errors', resource: @comment
+    ul class='question-comments__list'
+      = render @question.comments.comments_asc
+    - if user_signed_in?
+      = render 'comments/form', commentable: @question, comment: Comment.new
 
 section class='answers'
   h3= 'Answers:'

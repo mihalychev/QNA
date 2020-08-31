@@ -14,37 +14,43 @@ feature 'User can edit his answer' do
       end
   
       scenario 'edits his answer' do
-        click_on 'Edit'
-  
         within "#answer-#{answer.id}" do
-          fill_in 'Body', with: 'edited answer'
-          click_on 'Save'
-  
+          click_on 'Edit'
+    
+          within "#edit-answer-#{answer.id}" do
+            fill_in 'Body', with: 'edited answer'
+            click_on 'Save'
+          end
+          
           expect(page).to_not have_content answer.body
           expect(page).to have_content 'edited answer'
-          expect(page).to_not have_selector 'textarea'
+          expect(page).to_not have_selector 'textarea#answer_body'
         end
       end
   
       scenario 'edits his answer with errors' do
-        click_on 'Edit'
-  
         within "#answer-#{answer.id}" do
-          fill_in 'Body', with: nil
-          click_on 'Save'
+          click_on 'Edit'
+    
+          within "#edit-answer-#{answer.id}" do
+            fill_in 'Body', with: nil
+            click_on 'Save'
+          end
         end
         
         expect(page).to have_content "Body can't be blank"
       end
 
       scenario 'tries to attach files' do
-        click_on "Edit"
-
         within "#answer-#{answer.id}" do
-          fill_in 'Body', with: 'Body'
-          attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
-          click_on 'Save'
-  
+          click_on "Edit"
+
+          within "#edit-answer-#{answer.id}" do
+            fill_in 'Body', with: 'Body'
+            attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+            click_on 'Save'
+            
+          end
           expect(page).to have_link 'rails_helper.rb'
           expect(page).to have_link 'spec_helper.rb'
         end
@@ -53,13 +59,17 @@ feature 'User can edit his answer' do
       scenario 'tries to delete attached files' do
         within "#answer-#{answer.id}" do
           click_on "Edit"
-          fill_in 'Body', with: 'Body'
-          attach_file 'File', "#{Rails.root}/spec/rails_helper.rb"
-          click_on 'Save'
+          within "#edit-answer-#{answer.id}" do
+            fill_in 'Body', with: 'Body'
+            attach_file 'File', "#{Rails.root}/spec/rails_helper.rb"
+            click_on 'Save'
+          end
 
           click_on "Edit"
-          click_on "Delete file"
-          click_on 'Save'
+          within "#edit-answer-#{answer.id}" do
+            click_on "Delete file"
+            click_on 'Save'
+          end
 
           expect(page).to_not have_content 'rails_helper.rb'
         end

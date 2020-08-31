@@ -4,6 +4,7 @@ html lang="en"
     title qna
     = csrf_meta_tags
     = csp_meta_tag
+    = include_gon(init: true)
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
   body
