@@ -62,11 +62,6 @@ RSpec.describe AnswersController, type: :controller do
           answer.reload
           expect(answer).to_not be_best
         end
-
-        it 'returns a :forbidden status code' do
-          patch :best, params: { id: answer, format: :js }
-          expect(response).to have_http_status(:forbidden)  
-        end
       end
     end
 
@@ -124,11 +119,6 @@ RSpec.describe AnswersController, type: :controller do
           answer.reload
           expect(answer.body).to eq answer.body
         end
-
-        it 'returns a :forbidden status code' do
-          patch :update, params: { id: answer, answer: attributes_for(:answer) }, format: :js
-          expect(response).to have_http_status(:forbidden)  
-        end
       end
     end
 
@@ -161,11 +151,6 @@ RSpec.describe AnswersController, type: :controller do
   
         it 'tries to delete the answer' do
           expect { delete :destroy, params: { id: answer, question_id: question }, format: :js }.to_not change(Answer, :count)
-        end
-        
-        it 'returns a :forbidden status code' do
-          delete :destroy, params: { id: answer }, format: :js
-          expect(response).to have_http_status(:forbidden)  
         end
       end
     end

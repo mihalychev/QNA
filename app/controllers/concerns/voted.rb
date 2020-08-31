@@ -6,30 +6,21 @@ module Voted
   end
 
   def vote_up
-    if !current_user&.author_of?(@votable)
-      @votable.vote_up(current_user)
-      respond_votable
-    else
-      head :forbidden
-    end
+    authorize! :vote_up, @votable
+    @votable.vote_up(current_user)
+    respond_votable
   end
 
   def vote_down
-    if !current_user&.author_of?(@votable)
-      @votable.vote_down(current_user)
-      respond_votable
-    else
-      head :forbidden
-    end
+    authorize! :vote_down, @votable
+    @votable.vote_down(current_user)
+    respond_votable
   end
 
   def unvote
-    if !current_user&.author_of?(@votable)
-      @votable.unvote(current_user)
-      respond_votable
-    else
-      head :forbidden
-    end
+    authorize! :unvote, @votable
+    @votable.unvote(current_user)
+    respond_votable
   end
 
   private

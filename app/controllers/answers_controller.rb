@@ -7,33 +7,23 @@ class AnswersController < ApplicationController
   
   include Voted
 
+  authorize_resource
+
   def create
     @question = Question.find(params[:question_id])
     @answer = @question.answers.create(answer_params.merge(user: current_user))
   end
 
   def update
-    if current_user.author_of?(@answer)
-      @answer.update(answer_params)
-    else
-      head :forbidden
-    end
+    @answer.update(answer_params)
   end
 
   def best
-    if current_user.author_of?(@question)
-      @answer.set_best
-    else
-      head :forbidden
-    end
+    @answer.set_best
   end
 
   def destroy
-    if current_user.author_of?(@answer)
-      @answer.destroy
-    else
-      head :forbidden
-    end
+    @answer.destroy
   end
 
   private

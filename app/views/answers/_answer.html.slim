@@ -20,9 +20,9 @@
                 script src="#{link.url}.js"
               -else
                 = link_to link.name, link.url
-              - if current_user&.author_of?(answer)
+              - if can? :destroy, answer
                 = link_to 'Delete', link, method: 'delete', remote: true
-    - if current_user&.author_of?(answer)
+    - if can? :update, answer
       = form_with model: answer, class: 'hidden', method: 'patch', html: { id: "edit-answer-#{answer.id}" } do |f|
         p
           = f.label :body

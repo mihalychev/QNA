@@ -146,11 +146,6 @@ RSpec.describe QuestionsController, type: :controller do
           expect(question.title).to eq question.title
           expect(question.body).to eq question.body
         end
-        
-        it 'returns a :forbidden status code' do
-          patch :update, params: { id: question, question: attributes_for(:question) }, format: :js
-          expect(response).to have_http_status(:forbidden)  
-        end
       end
     end
 
@@ -185,11 +180,6 @@ RSpec.describe QuestionsController, type: :controller do
   
         it 'tries to delete question' do
           expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
-        end
-        
-        it 'returns a :forbidden status code' do
-          delete :destroy, params: { id: question }
-          expect(response).to have_http_status(:forbidden)  
         end
       end
     end
