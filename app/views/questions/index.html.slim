@@ -5,5 +5,5 @@ ul class='question-list'
   - @questions.each do |q|
     li id="question-list__#{q.id}"
       = link_to q.title, q
-
+- if can? :create, @questions
 p= link_to "Ask question", new_question_path 

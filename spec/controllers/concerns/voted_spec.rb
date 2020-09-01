@@ -30,15 +30,6 @@ shared_examples_for 'voted' do
           expect(response.content_type).to eq 'application/json; charset=utf-8'
         end
       end
-
-      context 'author' do
-        before { login(user) }
-
-        it 'responds with forbidden' do
-          patch :vote_up, params: { id: resource.id }, format: :json
-          expect(response).to have_http_status(:forbidden)
-        end
-      end
     end
   end
 
@@ -62,15 +53,6 @@ shared_examples_for 'voted' do
         it 'responds with json' do
           post :vote_down, params: { id: resource.id }, format: :json
           expect(response.content_type).to eq 'application/json; charset=utf-8'
-        end
-      end
-
-      context 'author' do
-        before { login(user) }
-
-        it 'responds with forbidden' do
-          patch :vote_up, params: { id: resource.id }, format: :json
-          expect(response).to have_http_status(:forbidden)
         end
       end
     end
@@ -97,15 +79,6 @@ shared_examples_for 'voted' do
         it 'responds with json' do
           delete :unvote, params: { id: resource.id }, format: :json
           expect(response.content_type).to eq 'application/json; charset=utf-8'
-        end
-      end
-
-      context 'author' do
-        before { login(user) }
-
-        it 'responds with forbidden' do
-          delete :unvote, params: { id: resource.id }, format: :json
-          expect(response).to have_http_status(:forbidden)
         end
       end
     end
