@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  use_doorkeeper
   devise_for :users
   root to: 'questions#index'
   
@@ -23,6 +24,16 @@ Rails.application.routes.draw do
   resources :attachments, only: %i[ destroy ]
   resources :links, only: %i[ destroy ]
   resources :rewards, only: %i[ index ]
+
+  namespace :api do
+    namespace :v1 do
+      resources :profiles, only: [ :index ] do
+        get :me, on: :collection
+      end
+
+      resources :questions, only: [:index]
+    end
+  end
 
   mount ActionCable.server => '/cable'
 end
