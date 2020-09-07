@@ -5,10 +5,7 @@ Doorkeeper.configure do
   # Check the list of supported ORMs here: https://github.com/doorkeeper-gem/doorkeeper#orms
   orm :active_record
 
-  default_scopes :read
-  optional_scopes :write
-    
-  enforce_configured_scopes
+  default_scopes :public
 
   # This block will be called to check whether the resource owner is authenticated or not.
   resource_owner_authenticator do

@@ -18,21 +18,21 @@ describe 'Profile API', type: :request do
       let(:me) { profiles.first }
       let(:access_token) { create(:access_token, resource_owner_id: me.id) }
 
-      before { get api_path, params: { access_token: access_token.token, user_id: me.id }, headers: headers }
+      before { get api_path, params: { access_token: access_token.token }, headers: headers }
 
       it 'returns 200 status' do
         expect(response).to be_successful
       end
 
       it 'returns list of users without authorized user' do
-        expect(json['profiles'].size).to eq 2
-        json['profiles'].each do |profile|
+        expect(json['users'].size).to eq 2
+        json['users'].each do |profile|
           expect(profile['id']).to_not eq me.id
         end
       end
 
       it 'does not return private fields' do
-        json['profiles'].each do |profile|
+        json['users'].each do |profile|
           %w[ password encrypted_password ].each do |attr|
             expect(profile).to_not have_key(attr)
           end
@@ -49,8 +49,9 @@ describe 'Profile API', type: :request do
     end
 
     context 'authorized' do
-      let(:me) { create :user }
+      let(:me) { create(:user) }
       let(:access_token) { create(:access_token, resource_owner_id: me.id) }
+      let(:user_response) { json['user'] }
 
       before { get api_path, params: { access_token: access_token.token }, headers: headers }
 
@@ -60,7 +61,7 @@ describe 'Profile API', type: :request do
 
       it 'returns all public fields' do
         %w[ id email admin created_at updated_at ].each do |attr|
-          expect(json[attr]).to eq me.send(attr).as_json
+          expect(user_response[attr]).to eq me.send(attr).as_json
         end
       end
 
