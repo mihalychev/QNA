@@ -9,7 +9,6 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   end
 
   def show
-    @question = Question.with_attached_files.find(params[:id])
     render json: @question, serializer: QuestionSerializer
   end
   
