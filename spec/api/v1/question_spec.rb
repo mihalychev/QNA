@@ -21,9 +21,7 @@ describe 'Question API', type: :request do
 
       before { get api_path, params: { access_token: access_token.token }, headers: headers }
 
-      it 'returns 200 status' do
-        expect(response).to be_successful
-      end
+      it_behaves_like 'Success Status'
 
       it 'returns list of questions' do
         expect(json['questions'].size).to eq 2
@@ -54,9 +52,7 @@ describe 'Question API', type: :request do
     context 'authorized' do
       before { get api_path, params: { access_token: access_token.token, id: question.id }, headers: headers }
 
-      it 'returns 200 status' do
-        expect(response).to be_successful
-      end
+      it_behaves_like 'Success Status'
 
       it 'returns all public fields' do        
         %w[ title body user_id comments links created_at updated_at ].each do |attr|
@@ -83,9 +79,8 @@ describe 'Question API', type: :request do
       context 'with valid attributes' do
         let(:request) { post api_path, params: { access_token: access_token.token, question: attributes_for(:question) }, headers: headers }
         
-        it 'returns 200 status' do
-          request
-          expect(response).to be_successful
+        it_behaves_like 'Success Status' do
+          before { request }
         end
   
         it 'saves new question in database' do
@@ -129,9 +124,7 @@ describe 'Question API', type: :request do
       context 'with valid attributes' do
         before { patch api_path, params: { access_token: access_token.token, id: question, question: { title: 'new title', body: 'new body' } }, headers: headers }
   
-        it 'returns 200 status' do
-          expect(response).to be_successful
-        end
+        it_behaves_like 'Success Status'
   
         it 'updates question' do
           %w[ title body ].each do |attr|

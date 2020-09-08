@@ -22,9 +22,7 @@ describe 'Answer API', type: :request do
 
       before { get api_path, params: { access_token: access_token.token, question_id: question }, headers: headers }
 
-      it 'returns 200 status' do
-        expect(response).to be_successful
-      end
+      it_behaves_like 'Success Status'
 
       it 'returns list of answers' do
         expect(json['answers'].size).to eq 2
@@ -51,9 +49,7 @@ describe 'Answer API', type: :request do
     context 'authorized' do
       before { get api_path, params: { access_token: access_token.token, id: answer.id }, headers: headers }
 
-      it 'returns 200 status' do
-        expect(response).to be_successful
-      end
+      it_behaves_like 'Success Status'
 
       it 'returns all public fields' do        
         %w[ body user_id comments links created_at updated_at ].each do |attr|
@@ -79,9 +75,8 @@ describe 'Answer API', type: :request do
       context 'with valid attributes' do
         let(:request) { post api_path, params: { access_token: access_token.token, answer: attributes_for(:answer), question_id: question }, headers: headers }
         
-        it 'returns 200 status' do
-          request
-          expect(response).to be_successful
+        it_behaves_like 'Success Status' do
+          before { request }
         end
   
         it 'saves new answer in database' do
@@ -124,9 +119,7 @@ describe 'Answer API', type: :request do
       context 'with valid attributes' do
         before { patch api_path, params: { access_token: access_token.token, id: answer, answer: { body: 'new body' } }, headers: headers }
   
-        it 'returns 200 status' do
-          expect(response).to be_successful
-        end
+        it_behaves_like 'Success Status'
   
         it 'updates answer' do
           %w[ body ].each do |attr|
