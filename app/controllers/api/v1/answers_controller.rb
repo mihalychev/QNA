@@ -1,12 +1,11 @@
 class Api::V1::AnswersController < Api::V1::BaseController
   before_action :find_answer, only: [ :show, :update, :destroy ]
-  before_action :find_question, only: [ :show, :update ]
+  before_action :find_question, only: [ :index, :create ]
   
   authorize_resource
 
   def index
-    @answers = Question.find(params[:question_id]).answers
-    render json: @answers, each_serializer: AnswersSerializer
+    render json: @question.answers, each_serializer: AnswersSerializer
   end
 
   def show
@@ -14,7 +13,6 @@ class Api::V1::AnswersController < Api::V1::BaseController
   end
   
   def create
-    @question = Question.find(params[:question_id])
     @answer = @question.answers.new(answer_params.merge(user: current_resource_owner))
 
     if @answer.save
@@ -43,10 +41,10 @@ class Api::V1::AnswersController < Api::V1::BaseController
   end
 
   def find_question
-    @question = @answer.question
+    @question = Question.find(params[:question_id])
   end
 
   def answer_params
-    params.require(:answer).permit(:body, links_attributes: [:id, :name, :url, :_destroy, user: current_resource_owner])
+    params.require(:answer).permit(:body, links_attributes: [:id, :name, :url, :_destroy])
   end
 end
