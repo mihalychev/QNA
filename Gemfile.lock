@@ -37,6 +37,11 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.1, >= 1.2.0)
+    active_model_serializers (0.10.10)
+      actionpack (>= 4.1, < 6.1)
+      activemodel (>= 4.1, < 6.1)
+      case_transform (>= 0.2)
+      jsonapi-renderer (>= 0.1.1.beta1, < 0.3)
     activejob (6.0.3.2)
       activesupport (= 6.0.3.2)
       globalid (>= 0.3.6)
@@ -92,6 +97,8 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (~> 1.5)
       xpath (~> 3.2)
+    case_transform (0.2)
+      activesupport
     childprocess (3.0.0)
     cocoon (1.2.14)
     concurrent-ruby (1.1.6)
@@ -103,6 +110,8 @@ GEM
       responders
       warden (~> 1.2.3)
     diff-lcs (1.4.4)
+    doorkeeper (5.4.0)
+      railties (>= 5)
     dotenv (2.7.6)
     dotenv-rails (2.7.6)
       dotenv (= 2.7.6)
@@ -129,6 +138,7 @@ GEM
     jbuilder (2.10.0)
       activesupport (>= 5.0.0)
     jmespath (1.4.0)
+    jsonapi-renderer (0.2.2)
     launchy (2.5.0)
       addressable (~> 2.7)
     listen (3.2.1)
@@ -160,6 +170,7 @@ GEM
       mini_portile2 (~> 2.4.0)
     nokogiri (1.10.10-x86-mingw32)
       mini_portile2 (~> 2.4.0)
+    oj (3.10.13)
     orm_adapter (0.5.0)
     pg (1.2.3)
     pg (1.2.3-x64-mingw32)
@@ -312,6 +323,7 @@ PLATFORMS
   x86-mswin32
 
 DEPENDENCIES
+  active_model_serializers (~> 0.10)
   aws-sdk-s3
   bootsnap (>= 1.4.2)
   byebug
@@ -319,12 +331,14 @@ DEPENDENCIES
   capybara (>= 2.15)
   cocoon
   devise
+  doorkeeper
   dotenv-rails
   factory_bot_rails
   gon
   jbuilder (~> 2.7)
   launchy
   listen (~> 3.2)
+  oj
   pg (>= 0.18, < 2.0)
   puma (~> 4.1)
   rails (~> 6.0.3, >= 6.0.3.2)
