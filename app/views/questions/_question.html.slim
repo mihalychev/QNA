@@ -1,5 +1,17 @@
 h2 class='question__title'= @question.title
 p class='question__body'= @question.body
+- if can?(:create, Subscription)
+  = link_to 'Subscribe', question_subscriptions_path(@question), 
+      method: :post, 
+      remote: true, 
+      id: 'sub',
+      class: "unsub-link #{ 'hidden' if current_user&.subscribed?(@question) }"
+- if can?(:destroy, Subscription)
+  = link_to 'Unsubscribe', subscription_path(@question), 
+      method: :delete, 
+      remote: true, 
+      id: 'unsub', 
+      class: "sub-link #{ 'hidden' unless current_user&.subscribed?(@question) }"
 
 - if @question.reward.presence
   p= @question.reward.title

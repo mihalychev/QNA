@@ -37,5 +37,6 @@ class Ability
       !@user.author_of?(resource)
     end
     can :best, Answer, question: { user_id: @user.id }
+    can %i[ create destroy], Subscription
   end
 end

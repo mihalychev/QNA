@@ -26,4 +26,10 @@ class Answer < ApplicationRecord
       return      
     end
   end
+
+  private
+
+  def notify
+    NewAnswerJob.perform_later(self)
+  end
 end

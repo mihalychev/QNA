@@ -1,0 +1,6 @@
+h1 Questions created in the last 24 hours:
+
+ul
+  - Question.last_day_questions.each do |question|
+    li
+      = question.title
