@@ -10,6 +10,6 @@ class SubscriptionsController < ApplicationController
 
   def destroy
     @question = Question.find(params[:id])
-    current_user.subscriptions.find_by(question: @question).destroy
+    current_user.subscriptions.find_by(question: @question)&.destroy
   end
 end

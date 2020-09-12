@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe NewAnswer do
+RSpec.describe NewAnswerService do
   let(:author) { create(:user) }
   let(:users) { create_list(:user, 3) }
   let(:question) { create(:question, user: author) }
