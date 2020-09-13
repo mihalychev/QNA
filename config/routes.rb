@@ -1,4 +1,10 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
+  authenticate :user, lambda { |u| u.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
+
   use_doorkeeper
   devise_for :users
   root to: 'questions#index'
@@ -19,6 +25,7 @@ Rails.application.routes.draw do
       resources :comments, only: %i[ create ]
     end
     resources :comments, only: %i[ create ]
+    resources :subscriptions, only: %i[ create destroy ]
   end
 
   resources :attachments, only: %i[ destroy ]

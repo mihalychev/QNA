@@ -97,5 +97,10 @@ describe Ability do
       it { should be_able_to :destroy, create(:link, linkable: question) }
       it { should_not be_able_to :destroy, create(:link, linkable: other_question) }
     end
+
+    context 'subscription' do
+      it { should be_able_to :create, create(:subscription) }
+      it { should be_able_to :destroy, create(:subscription) }
+    end
   end
 end

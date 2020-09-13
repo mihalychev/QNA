@@ -15,6 +15,8 @@ class Answer < ApplicationRecord
 
   scope :sorted_answers, -> { order(best: :desc, created_at: :asc) }
 
+  after_create :notify
+
   def set_best
     if !best?
       Answer.transaction do
@@ -25,5 +27,11 @@ class Answer < ApplicationRecord
     else
       return      
     end
+  end
+
+  private
+
+  def notify
+    NewAnswerJob.perform_later(self)
   end
 end
