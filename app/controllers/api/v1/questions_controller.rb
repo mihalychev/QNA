@@ -41,6 +41,6 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   end
 
   def question_params
-    params.require(:question).permit(:title, :body, links_attributes: [:id, :name, :url, :_destroy], reward_attributes: [:title, :image])
+    params.require(:question).permit(:title, :body, links_attributes: [:id, :name, :url, :_destroy])
   end
 end

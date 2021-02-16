@@ -119,16 +119,6 @@ ActiveRecord::Schema.define(version: 2020_09_11_130243) do
     t.index ["user_id"], name: "index_questions_on_user_id"
   end
 
-  create_table "rewards", force: :cascade do |t|
-    t.string "title"
-    t.bigint "question_id"
-    t.bigint "user_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["question_id"], name: "index_rewards_on_question_id"
-    t.index ["user_id"], name: "index_rewards_on_user_id"
-  end
-
   create_table "subscriptions", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "question_id", null: false
@@ -168,8 +158,6 @@ ActiveRecord::Schema.define(version: 2020_09_11_130243) do
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
   add_foreign_key "questions", "users"
-  add_foreign_key "rewards", "questions"
-  add_foreign_key "rewards", "users"
   add_foreign_key "subscriptions", "questions"
   add_foreign_key "subscriptions", "users"
 end

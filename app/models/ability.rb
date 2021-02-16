@@ -17,7 +17,6 @@ class Ability
 
   def guest_abilities
     can :read, :all
-    cannot :read, Reward
   end
 
   def admin_abilities
@@ -27,7 +26,6 @@ class Ability
   def user_abilities
     guest_abilities
     can :me, User, user_id: @user.id
-    can :read, Reward
     can :create,  [ Question, Answer, Comment ]
     can :update,  [ Question, Answer, Comment ], user_id: @user.id
     can :destroy, [ Question, Answer, Comment ], user_id: @user.id
