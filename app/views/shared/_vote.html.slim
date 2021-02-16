@@ -1,19 +1,17 @@
-- if user_signed_in? && !current_user&.author_of?(resource)
-  .vote id="vote-#{resource.class.name.downcase}-#{resource.id}"
-    p class='vote__value'
-      = resource.total_votes
-    = link_to 'Up', polymorphic_path(resource, action: :vote_up),
-          method: :post,
-          remote: true,
-          data: { type: :json },
-          class: (resource.votes.where(user: current_user).exists? ? 'vote__up hidden' : 'vote__up')
-    = link_to 'Unvote', polymorphic_path(resource, action: :unvote),
-          method: :delete,
-          remote: true,
-          data: { type: :json },
-          class: (resource.votes.where(user: current_user).exists? ? 'vote__unvote' : 'vote__unvote hidden')
-    = link_to 'Down', polymorphic_path(resource, action: :vote_down),
-          method: :post,
-          remote: true,
-          data: { type: :json },
-          class: (resource.votes.where(user: current_user).exists? ? 'vote__down hidden' : 'vote__down')
+= content_tag(:div, 
+  class: 'd-flex flex-column align-center mb-2', 
+  id: "vote-#{resource.class.name.downcase}-#{resource.id}",
+  data: { resource: resource.class.name.downcase, resource_id: resource.id })
+
+  - if user_signed_in? && !current_user&.author_of?(resource)
+    span class="cursor-pointer vote-up #{'voted' if resource.voted_by?(current_user, 1) }"
+      = octicon("chevron-up", height: 48, 
+        fill: (resource.voted_by?(current_user, 1) ? 'black' : 'lightgray'))
+        
+  p class='text-center text-secondary fs-5 m-0' id='vote-value' style='width: 48px'
+    = resource.total_votes
+
+  - if user_signed_in? && !current_user&.author_of?(resource)
+    span class="cursor-pointer vote-down #{'voted' if resource.voted_by?(current_user, -1) }"
+      = octicon("chevron-down", height: 48, 
+        fill: (resource.voted_by?(current_user, -1) ? 'black' : 'lightgray'))

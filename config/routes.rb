@@ -22,9 +22,9 @@ Rails.application.routes.draw do
       member do
         patch :best
       end
-      resources :comments, only: %i[ create ]
+      resources :comments, only: %i[ create update destroy ]
     end
-    resources :comments, only: %i[ create ]
+    resources :comments, only: %i[ create update destroy ]
     resources :subscriptions, only: %i[ create destroy ]
   end
 

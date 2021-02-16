@@ -1,3 +1,26 @@
+.fs-1 { font-size: 0.8rem; }
+.fs-2 { font-size: 1rem; }
+.fs-3 { font-size: 1.2rem; }
+.fs-4 { font-size: 1.4rem; }
+.fs-5 { font-size: 1.6rem; }
+.fs-6 { font-size: 1.8rem; }
+
 .hidden {
   display: none
+}
+
+.invisible {
+  opacity: 0
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.border-ccc {
+  border-color: #ccc !important;
+}
+
+textarea {
+  resize: vertical;
 }

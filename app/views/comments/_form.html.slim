@@ -1,6 +1,4 @@
- = form_with model: [ commentable, comment ], method: 'post', class: 'form form_answer-comment-create' do |f|
-    p
-      = f.label :body
-      = f.text_area :body
-    
-    = f.submit 'Comment'
+ = form_with model: [ commentable, comment ], method: 'post', class: 'hidden', id: 'add-comment-form' do |f|
+    = f.text_area :body, class: 'form-control mb-2', id: 'add-comment-body'
+    = f.submit 'Comment', class: 'btn btn-primary mr-2'
+    = link_to 'Close', '#', class: 'btn btn-secondary', id: 'add-comment-close'

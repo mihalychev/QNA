@@ -1,8 +1,8 @@
-.nested-fields
-  .field
-    = f.label :name
-    = f.text_field :name
-  .field
-    = f.label :url
-    = f.text_field :url 
-  = link_to_remove_association "remove link", f
+div class='nested-fields position-relative'
+  .mb-1
+    = f.label :name, class: 'form-label mb-1'
+    = f.text_field :name, class: 'form-control form-control-sm'
+  .mb-3
+    = f.label :url, class: 'form-label mb-1'
+    = f.text_field :url, class: 'form-control form-control-sm'
+  = link_to_remove_association "X", f, class: 'text-danger text-decoration-none position-absolute top-0 end-0', style: 'top: 0; right: 0;'

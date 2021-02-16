@@ -13,11 +13,11 @@ class Answer < ApplicationRecord
 
   validates :body, presence: true
 
-  scope :sorted_answers, -> { order(best: :desc, created_at: :asc) }
+  scope :sorted_answers, -> { left_joins(:votes).group(:id).order('best desc, count(votes) desc, created_at desc') }
 
   after_create :notify
 
-  def set_best
+  def toggle_best
     if !best?
       Answer.transaction do
         question.answers.where(best: true).update_all(best: false)
@@ -25,7 +25,9 @@ class Answer < ApplicationRecord
         question.reward&.update!(user: user)
       end
     else
-      return      
+      Answer.transaction do
+        update!(best: false)
+      end
     end
   end
 

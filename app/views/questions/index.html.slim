@@ -1,9 +1,34 @@
-- if current_user
-  = link_to 'Rewards', rewards_path
-
-ul class='question-list'
+div class='d-flex justify-content-between align-items-center px-4 mb-4'
+  h2 All Questions
+  - if can? :create, Question
+    =link_to "Ask question", new_question_path, class: 'btn btn-primary'
+div class='d-flex justify-content-between align-items-center px-4'
+  span class='fs-3'
+    = "#{Question.count} questions"
+  div class="d-flex justify-content-between align-items-center"
+    button class="btn btn-secondary active"
+      = 'Newest'
+    button class="btn btn-secondary"
+      = 'Active'
+    button class="btn btn-secondary"
+      = 'Unanswered'
+    button class="btn btn-secondary"
+      = 'Closed'
+</ul>
+ul class='list-group list-group-flush px-3' id='question-list'
   - @questions.each do |q|
-    li id="question-list__#{q.id}"
-      = link_to q.title, q
-- if can? :create, @questions
-p= link_to "Ask question", new_question_path 
+    li class="list-group-item py-3 d-flex align-items-center" id="question-#{q.id}"
+      div class='d-flex flex-column align-items-center justify-content-center fs-4'
+        p class='m-0' style='line-height: 1.8rem' 
+          = q.total_votes
+        - if q.have_best_answer?
+          = octicon "check", height: 16, fill: 'green'
+      div class='flex-grow-1 py-2 px-3'
+        = link_to q.title, q, class: 'fs-3 text-decoration-none', style: "line-height: 1.8rem"
+        p class='m-0 p-0 fs-2'
+          = q.body.length > 100 ? q.body.first(100) + '...' : q.body 
+      div class='text-secondary'
+        p class='p-0 m-0 text-center'
+          = q.created_time
+        p class='p-0 m-0'
+          = q.created_date

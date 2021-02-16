@@ -1,5 +1,6 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
+  before_action :find_comment, only: :update
   before_action :find_commentable, only: :create
   after_action :publish_comment, only: :create
 
@@ -7,6 +8,15 @@ class CommentsController < ApplicationController
 
   def create
     @comment = @commentable.comments.create(comment_params.merge(user: current_user))
+  end
+
+  def update
+    @comment.update(comment_params)
+  end
+
+  def destroy
+    @comment = current_user.comments.find(params[:id])
+    @comment.destroy
   end
 
   private
@@ -17,6 +27,10 @@ class CommentsController < ApplicationController
       "question_#{ @commentable.is_a?(Question) ? @commentable.id : @commentable.question.id }_comments",
       @comment
     )
+  end
+
+  def find_comment
+    @comment = Comment.find(params[:id])
   end
 
   def find_commentable

@@ -1,6 +1,8 @@
 $('.<%= "#{@commentable.class.name.downcase}" %>-comment-errors').html('<%= render 'shared/errors', resource: @comment %>')
 
 <% if @comment.persisted? %>
-  $('#<%= @commentable.class.name.downcase %>-<%= @commentable.id %> .<%= @commentable.class.name.downcase %>-comments__list').append('<%= j render @comment %>')
-  $('.form_<%= @commentable.class.name.downcase %>-comment-create #comment_body').val('')
+  $('#comments-list').append('<%= j render @comment %>')
+  $('#add-comment-body').val('')
+  $('#add-comment-form').addClass('hidden')
+  $('#add-comment').removeClass('hidden')
 <% end %>

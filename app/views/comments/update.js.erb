@@ -1,0 +1,8 @@
+$('.question-comment-errors').html('<%= render 'shared/errors', resource: @comment %>')
+
+<% unless @comment.errors.present? %>
+  $('#comment-' + <%=@comment.id%> + ' form').addClass('hidden')
+  $('#comment-' + <%=@comment.id%> + ' .comment-body').html('<%= @comment.body %>')
+  $('#comment-' + <%=@comment.id%> + ' .comment-body').removeClass('hidden')
+  $('.edit-comment[data-comment-id=' + <%=@comment.id%> + ']').removeClass('hidden')
+<% end %>

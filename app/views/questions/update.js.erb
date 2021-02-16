@@ -1,5 +1,9 @@
 $('.question-errors').html('<%= render 'shared/errors', resource: @question %>')
 
 <% if !@question.errors.present? %>
-  $('.question').html('<%= j render @question %>')
+  $('#question-content h2').html('<%= @question.title %>')
+  $('#question-content #question-body').html('<%= @question.body %>')
+  $('form#edit-question-<%= @question.id %>').addClass('hidden')
+  $('#question-content').removeClass('hidden')
+  $('#edit-question').removeClass('hidden')
 <% end %>

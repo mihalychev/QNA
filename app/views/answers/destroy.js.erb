@@ -1,1 +1,2 @@
 $("#answer-<%= @answer.id %>").remove()
+$('#answers-count').html("<%= @question.answers.count %> Answers")

@@ -28,9 +28,9 @@ class Ability
     guest_abilities
     can :me, User, user_id: @user.id
     can :read, Reward
-    can :create, [ Question, Answer, Comment ]
-    can :update, [ Question, Answer ], user_id: @user.id
-    can :destroy, [ Question, Answer ], user_id: @user.id
+    can :create,  [ Question, Answer, Comment ]
+    can :update,  [ Question, Answer, Comment ], user_id: @user.id
+    can :destroy, [ Question, Answer, Comment ], user_id: @user.id
     can :destroy, ActiveStorage::Attachment, record: { user_id: @user.id }
     can :destroy, Link, linkable: { user_id: @user.id }
     can %i[vote_up vote_down unvote], [ Question, Answer ] do |resource| 

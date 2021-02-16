@@ -1,5 +1,8 @@
 $('.answer-errors').html('<%= render 'shared/errors', resource: @answer %>')
 
-<% if !@answer.errors.present? %>
-  $("#answer-<%= @answer.id %>").html('<%= j render @answer %>')
+<% unless @answer.errors.present? %>
+  $('.edit-answer[data-answer-id=' + <%=@answer.id%> + ']').removeClass('hidden')
+  $('#answer-' + <%=@answer.id%> + '-content').html('<%= @answer.body %>')
+  $('#answer-' + <%=@answer.id%> + '-content').removeClass('hidden')
+  $('form#edit-answer-' + <%=@answer.id%>).addClass('hidden')
 <% end %>

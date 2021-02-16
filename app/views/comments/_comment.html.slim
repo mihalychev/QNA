@@ -1,3 +1,17 @@
-li class='comment' id="comment-#{comment.id}"
-  p class='comment__body'
-    = comment.body
+li class='list-group-item pt-2 pb-4 pl-3 pr-5 position-relative' id="comment-#{comment.id}"
+  div class='mb-0 text-secondary' style='width: 90%'
+    p class='comment-body mb-0'
+      = comment.body
+    = form_with model: comment, method: :patch, remote: true, class: 'hidden' do |f|
+      = f.text_area :body, class: 'form-control mb-3'
+      = f.submit 'Edit', class: 'btn btn-primary mr-2'
+      = link_to 'Cancel', '#', class: 'edit-comment-close btn btn-secondary', data: { comment_id: comment.id }
+  
+  p class='position-absolute mb-0 badge badge-pill badge-secondary fs-1' style='bottom: 4px; right: 10px;'
+    = comment.user.email
+  - if can?(:update, comment) && can?(:destroy, comment) 
+    div class='position-absolute' style='top: 3px; right: 15px;'  
+      = link_to '#', class: 'edit-comment mr-2', data: { comment_id: comment.id } do
+        = octicon "pencil", height: 16
+      = link_to comment, method: :delete, remote: true do
+        = octicon "trashcan", height: 16

@@ -22,6 +22,18 @@ class Question < ApplicationRecord
   after_create :calculate_reputation
   after_create :subscribe_after_create
 
+  def have_best_answer?
+    !answers.find_by(best: true).nil?
+  end
+
+  def created_time
+    created_at.strftime('%H:%M')
+  end
+
+  def created_date
+    created_at.strftime('%d.%m.%Y')
+  end
+
   private
 
   def subscribe_after_create

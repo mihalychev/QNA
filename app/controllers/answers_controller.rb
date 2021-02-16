@@ -19,7 +19,7 @@ class AnswersController < ApplicationController
   end
 
   def best
-    @answer.set_best
+    @answer.toggle_best
   end
 
   def destroy

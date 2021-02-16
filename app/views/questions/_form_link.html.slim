@@ -1,6 +1,3 @@
-p Links:
 #links
-  = f.fields_for :links do |link|
-    = render 'link_fields', f: link
-  .add_link
-    = link_to_add_association 'add link', f, :links
+  .mb-3
+    = link_to_add_association 'add link', f, :links, partial: 'link_fields', class: 'text-decoration-none text-muted'

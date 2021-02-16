@@ -1,17 +1,27 @@
 - if answer.persisted?
-  li class='answer' id="answer-#{answer.id}"
-    = render 'shared/vote', resource: answer
+  li class='list-group-item px-0 py-3 d-flex position-relative' id="answer-#{answer.id}"
 
-    - if current_user&.author_of?(answer.question) && answer.best?
-      = 'BEST'
-    p class='answer__body'= answer.body
+    div class="d-flex flex-column align-items-center #{ 'pr-2 mr-3 border-right' if !current_user&.author_of?(answer) || current_user&.author_of?(answer.question) || answer.best?}"
+      = render 'shared/vote', resource: answer
+      - if !current_user&.author_of?(answer.question) && answer.best?
+        div class='text-center' style='width: 48px'
+          = octicon "check", height: 36, fill: 'green'
+
+      - if current_user&.author_of?(answer.question) && answer.best?
+        = link_to best_answer_path(answer), method: 'patch', data: { answer_id: answer.id }, class: 'best-toggle text-center', style: 'width: 48px', remote: true do
+          = octicon "check", height: 36, fill: 'green'
+      - if current_user&.author_of?(answer.question) && !answer.best?
+        = link_to best_answer_path(answer), method: 'patch', data: { answer_id: answer.id }, class: 'best-toggle text-center', style: 'width: 48px', remote: true do
+          = octicon "check", height: 36, fill: 'lightgray'
+
+    p class='fs-2 py-1 pr-5 w-100' id="answer-#{answer.id}-content"
+      = answer.body
     - if answer.files.attached?
       - answer.files.each do |file|
         p class="file-#{file.id}"
           = link_to file.filename.to_s, url_for(file)
     - if answer.links.presence
       .links
-        p Links:
         ul
           - answer.links.each do |link|
             li id="link-#{link.id}"
@@ -24,9 +34,7 @@
                 = link_to 'Delete', link, method: 'delete', remote: true
     - if can? :update, answer
       = form_with model: answer, class: 'hidden', method: 'patch', html: { id: "edit-answer-#{answer.id}" } do |f|
-        p
-          = f.label :body
-          = f.text_area :body
+        p= f.text_area :body, class: 'form-control'
         p
           = f.label :files
           = f.file_field :files, multiple: true, direct_upload: true
@@ -37,11 +45,15 @@
               = link_to "Delete file", attachment_path(file), method: 'delete', remote: true
         .new-link
           = link_to_add_association 'add link', f, :links, partial: 'link_fields'
-        = f.submit 'Save'
-      = link_to 'Edit', '#', class: 'button button_edit-answer', data: { answer_id: answer.id }
-      = link_to 'Delete', answer, method: 'delete', remote: true, class: 'button button_delete-answer'
-    - if current_user&.author_of?(answer.question) && !answer.best?
-      = link_to 'Mark as best', best_answer_path(answer), method: 'patch', class: 'button button_best-answer', data: { answer_id: answer.id }, remote: true
+        = f.submit 'Save', class: 'btn btn-success mr-2'
+        = link_to 'Close', '#', class: 'edit-answer-close btn btn-secondary', data: { answer_id: answer.id }
+      div class='position-absolute' style='top: 15px; right: 0'
+        = link_to '#', class: 'edit-answer mr-3', data: { answer_id: answer.id } do
+          = octicon "pencil", height: 20
+        = link_to answer, method: 'delete', remote: true, class: 'button button_delete-answer' do
+          = octicon "trash", height: 20
+    p class='position-absolute mb-0 badge badge-pill badge-primary fs-1' style='bottom: 8px; right: 0;'
+      = answer.user.email
     .answer-comments id="answer-comments-#{answer.id}"
       .answer-comment-errors
         = render 'shared/errors', resource: @comment

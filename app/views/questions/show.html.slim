@@ -1,30 +1,50 @@
-section class="question" id="question-#{@question.id}" data-question-id="#{@question.id}"
-  = render @question
-  = render 'shared/vote', resource: @question
-  .question__comments
-    .question-comment-errors
-      = render 'shared/errors', resource: @comment
-    ul class='question-comments__list'
-      = render @question.comments.comments_asc
-    - if user_signed_in?
-      = render 'comments/form', commentable: @question, comment: Comment.new
+article class='px-3'
+  section class='mb-4 pb-3 d-flex border-bottom' id="question-#{@question.id}" data-question-id="#{@question.id}"
+    div class='d-flex flex-column align-items-center border-right pr-2 mr-3'
+      = render 'shared/vote', resource: @question
+      - if can?(:create, Subscription) && can?(:destroy, Subscription)
+        = link_to subscription_path(@question), 
+          method: :delete, 
+          remote: true, 
+          id: 'unsub',
+          class: "text-secondary text-decoration-none #{'hidden' unless current_user&.subscribed?(@question)}" do
+            = octicon "bookmark-slash", height: 20, fill: 'gray'
 
-section class='answers'
-  h3= 'Answers:'
-  .answer-errors
-    = render 'shared/errors', resource: @answer
-  ul class='answers__list'
-    = render @question.answers.sorted_answers
-  - if current_user
-    h3= 'Answer the question'
-    = form_with model: [ @question, @answer ], class: 'form form_answer-create', method: 'post' do |f|
-      p
-        = f.label :body
-        = f.text_area :body
-      p
-        = f.label :files
-        = f.file_field :files, multiple: true, direct_upload: true
+        = link_to question_subscriptions_path(@question), 
+          method: :post, 
+          remote: true, 
+          id: 'sub',
+          class: "text-secondary text-decoration-none #{'hidden' if current_user&.subscribed?(@question)}" do
+            = octicon "bookmark", height: 20, fill: 'gray'
+    .container
+      = render @question
+      .question__comments
+        .question-comment-errors
+          = render 'shared/errors', resource: @comment
+        ul class='list-group mb-2' id='comments-list'
+          = render @question.comments.comments_asc
+        - if can? :create, Comment
+          = link_to "add comment", '#', class: 'text-decoration-none text-muted', id: 'add-comment'
+          = render 'comments/form', commentable: @question, comment: Comment.new
 
-      = render 'form_link', f: f
-
-      = f.submit 'Answer'
+  section class='px-5'
+    h4 class='px-2 mb-3 fs-5' id='answers-count'
+      = "#{@question.answers.count} Answers"
+    ul class='list-group list-group-flush mb-3' id='answers-list'
+      = render @question.answers.sorted_answers
+    - if current_user
+      h3 class='fs-4 mb-3'
+        = 'Add Answer'
+      .answer-errors
+        = render 'shared/errors', resource: @answer
+      = form_with model: [ @question, @answer ], class: 'form form_answer-create', method: 'post' do |f|
+        .mb-3#answer-body
+          div class='d-flex align-items-center py-1 px-2 border-left border-top border-right border-ccc'
+            = link_to_add_association f, :links, partial: 'link_fields', class: 'fs-1 text-decoration-none text-muted mb-0 mr-3', id: 'add-answer-link' do
+              = octicon "link", height: 16, fill: 'gray'
+            = f.label :files, class: 'fs-1 m-0 text-muted cursor-pointer' do
+              = octicon "file", height: 16, fill: 'gray'
+            = f.file_field :files, multiple: true, direct_upload: true, class: 'hidden'
+          = f.text_area :body, class: 'form-control'
+        / = render 'form_link', f: f
+        = f.submit 'Answer', class: 'btn btn-primary mx-auto mb-4'

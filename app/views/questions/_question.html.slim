@@ -1,57 +1,58 @@
-h2 class='question__title'= @question.title
-p class='question__body'= @question.body
-- if can?(:create, Subscription)
-  = link_to 'Subscribe', question_subscriptions_path(@question), 
-      method: :post, 
-      remote: true, 
-      id: 'sub',
-      class: "unsub-link #{ 'hidden' if current_user&.subscribed?(@question) }"
-- if can?(:destroy, Subscription)
-  = link_to 'Unsubscribe', subscription_path(@question), 
-      method: :delete, 
-      remote: true, 
-      id: 'unsub', 
-      class: "sub-link #{ 'hidden' unless current_user&.subscribed?(@question) }"
+.question
+  #question-content.position-relative.pb-5
+    h2
+      = @question.title
+    p.mb-0#question-body
+      = @question.body
+    p class='position-absolute mb-0 badge badge-primary fs-2' style='bottom: 15px; right: 0;'
+      = question.user.email
 
-- if @question.reward.presence
-  p= @question.reward.title
-  img src=url_for(@question.reward.image)
+    - if can?(:update, @question) && can?(:destroy, @question)
+      div class='position-absolute' style='top: 15px; right: 0'
+          = link_to '#', id: 'edit-question', class: 'mr-3', data: { question_id: @question.id } do
+            = octicon "pencil", height: 24
+          = link_to @question, method: 'delete' do
+            = octicon "trash", height: 24
 
-- if @question.files.attached?
-  - @question.files.each do |file|
-    p class="file-#{file.id}"
-      = link_to file.filename.to_s, url_for(file)
+  - if can? :update, @question
+    .question-errors
+      = render 'shared/errors', resource: @question
+    = form_with model: @question, class: 'mb-3 hidden', method: 'patch', html: { id: "edit-question-#{@question.id}" } do |f|
+      .mb-3
+        = f.label :title, class: 'form-label'
+        = f.text_field :title, class: 'form-control'
+      .mb-3#edit-question-body
+        = f.label :body, class: 'form-label'
+        div class='d-flex align-items-center py-1 px-2 border-left border-top border-right border-ccc'
+          = link_to_add_association 'add link', f, :links, partial: 'link_fields', class: 'fs-1 text-decoration-none text-muted mb-0 mr-3', id: 'add-question-link'
+          = f.label :files, 'add files', class: 'fs-1 m-0 text-muted cursor-pointer'
+          = f.file_field :files, multiple: true, direct_upload: true, class: 'hidden'
+        = f.text_area :body, class: 'form-control'
 
-- if @question.links.presence
-  .links
-    p Links:
-    ul
+      - if @question.files.attached?
+        - @question.files.each do |file|
+          div class="mb-3 file-#{file.id}"
+            = link_to file.filename.to_s, url_for(file)
+            = link_to "Delete file", attachment_path(file), method: 'delete', remote: true
+      = f.submit 'Save', class: 'btn btn-success mr-2'
+      = link_to 'Close', '#', class: 'btn btn-secondary', id: 'edit-question-close', data: { question_id: @question.id }
+
+  - if @question.links.presence
+    ul class='list-group list-group-flush list-group-horizontal'
       - @question.links.each do |link|
-        li id="link-#{link.id}"
+        li class='list-group-item' id="link-#{link.id}"
           - if link.gist?
             = render 'link/gist_body', resource: link
           -else
-            = link_to link.name, link.url
+            = link_to link.name, link.url, class: 'mr-2'
             - if can? :destroy, @question
               = link_to 'Delete', link, method: 'delete', remote: true
 
+  - if @question.reward.presence
+    p= @question.reward.title
+    img src=url_for(@question.reward.image)
 
-.question-errors
-  = render 'shared/errors', resource: @question
-- if can? :update, @question
-  = form_with model: @question, class: 'hidden', method: 'patch', html: { id: "edit-question-#{@question.id}" } do |f|
-    p
-      = f.label :body
-      = f.text_area :body
-    p
-      = f.label :files
-      = f.file_field :files, multiple: true, direct_upload: true
-    - if @question.files.attached?
-      - @question.files.each do |file|
-        p class="file-#{file.id}"
-          = link_to file.filename.to_s, url_for(file)
-          = link_to "Delete file", attachment_path(file), method: 'delete', remote: true
-    = link_to_add_association 'add link', f, :links, partial: 'link_fields'
-    = f.submit 'Save'
-  = link_to "Edit question", '#', class: 'button button_edit-question', data: { question_id: @question.id }
-  = link_to "Delete question", @question, method: 'delete', class: 'button button_delete-question'
+  - if @question.files.attached?
+    - @question.files.each do |file|
+      p class="file-#{file.id}"
+        = link_to file.filename.to_s, url_for(file)

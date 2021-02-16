@@ -6,10 +6,12 @@ module Votable
   end
 
   def vote_up(user)
+    unvote(user)
     make_vote(user, 1) unless votes.where(user: user).exists?
   end
 
   def vote_down(user)
+    unvote(user)
     make_vote(user, -1) unless votes.where(user: user).exists?
   end
 
@@ -19,6 +21,10 @@ module Votable
 
   def total_votes
     votes.sum(:value)
+  end
+
+  def voted_by?(user, value)
+    votes.where(user: user, votable_type: self.class.name, value: value).exists?
   end
 
   private
