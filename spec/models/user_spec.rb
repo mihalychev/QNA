@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
@@ -24,7 +26,6 @@ RSpec.describe User, type: :model do
     end
 
     context 'invalid' do
-
       it 'compares user and author' do
         expect(user2).to_not be_author_of(question)
       end

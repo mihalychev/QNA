@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CommentsController < ApplicationController
   before_action :authenticate_user!
   before_action :find_comment, only: :update
@@ -23,8 +25,9 @@ class CommentsController < ApplicationController
 
   def publish_comment
     return if @comment.errors.any?
+
     ActionCable.server.broadcast(
-      "question_#{ @commentable.is_a?(Question) ? @commentable.id : @commentable.question.id }_comments",
+      "question_#{@commentable.is_a?(Question) ? @commentable.id : @commentable.question.id}_comments",
       @comment
     )
   end

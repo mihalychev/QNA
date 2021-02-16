@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module Voted
   extend ActiveSupport::Concern
 
   included do
-    before_action :find_votable, only: %i[ vote_up vote_down unvote ]
+    before_action :find_votable, only: %i[vote_up vote_down unvote]
   end
 
   def vote_up
@@ -28,7 +30,9 @@ module Voted
   def respond_votable
     respond_to do |format|
       if @votable.save
-        format.json { render json: { id: @votable.id, resource: @votable.class.name.underscore, total_votes: @votable.total_votes } }
+        format.json do
+          render json: { id: @votable.id, resource: @votable.class.name.underscore, total_votes: @votable.total_votes }
+        end
       else
         format.json { render json: @votable.errors.full_messages, status: :unprocessable_entity }
       end

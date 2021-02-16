@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
-require Rails.root.join("spec/models/concerns/votable_spec.rb")
-require Rails.root.join("spec/models/concerns/commentable_spec.rb")
+require Rails.root.join('spec/models/concerns/votable_spec.rb')
+require Rails.root.join('spec/models/concerns/commentable_spec.rb')
 
 RSpec.describe Answer, type: :model do
   it_behaves_like 'votable'
   it_behaves_like 'commentable'
 
-  describe 'associations' do    
+  describe 'associations' do
     it { should belong_to :question }
     it { should belong_to :user }
     it { should have_many(:links).dependent(:destroy) }

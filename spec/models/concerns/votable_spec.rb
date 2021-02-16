@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-shared_examples_for "votable" do
+shared_examples_for 'votable' do
   it { should have_many(:votes).dependent(:destroy) }
 
   let(:user) { create(:user) }
@@ -22,6 +24,6 @@ shared_examples_for "votable" do
   it '#vote_down' do
     votable = create(model.to_s.underscore.to_sym)
     votable.vote_down(user)
-    expect(votable.votes.order(created_at: :desc).first.value).to eq -1
+    expect(votable.votes.order(created_at: :desc).first.value).to eq(-1)
   end
 end
