@@ -9,28 +9,10 @@ html lang="en"
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
   body
-    nav class="navbar navbar-expand-lg navbar-dark bg-primary"
-      .container
-        h1 class='text-light mb-0 mr-3'
-          = 'Q&A'
-        div class="collapse navbar-collapse px-4"
-          ul class="navbar-nav mr-auto"
-            li class="nav-item mr-3 fs-2 active"
-              = link_to "Home", root_path, class: 'text-light'
-          form class="form-inline my-2 my-lg-0"
-            input class="form-control mr-sm-2" type="text" placeholder="Search"
-            button class="btn btn-secondary my-2 my-sm-0" type="submit"
-              = 'Search'
-        
-        .user
-          - if current_user
-            = link_to 'Logout', destroy_user_session_path, method: 'delete', class: "fs-2 text-light"
-          - else
-            = link_to 'Login', new_user_session_path, class: "fs-2 text-light mr-2"
-            = link_to 'Signup', new_user_registration_path, class: "fs-2 text-light"
+    = render 'layouts/header'
 
     main class='container'
-      .text-center.py-2
+      .text-center.pt-3.pb-2
         p class='notice text-info'
           = notice
         p class='alert text-danger'
