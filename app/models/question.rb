@@ -20,7 +20,14 @@ class Question < ApplicationRecord
   default_scope { order(created_at: :desc) }
 
   scope :filtered_by_status, lambda { |status = nil|
-    status.present? ? where(status: status).order(created_at: :desc) : all
+    case status
+    when nil
+      all
+    when 'active'
+      where(status: ['unanswered', 'active']).order(created_at: :desc) 
+    else
+      where(status: status).order(created_at: :desc)
+    end
   }
 
   scope :filtered_by_starts_with, -> (search) { where("title LIKE ?", "#{search}%") }
