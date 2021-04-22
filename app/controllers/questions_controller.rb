@@ -56,7 +56,7 @@ class QuestionsController < ApplicationController
       :title,
       :body,
       files: [],
-      links_attributes: [:id, :name, :url, :_destroy, user: current_user]
+      links_attributes: [:id, :name, :url, :_destroy, { user: current_user }]
     )
   end
 

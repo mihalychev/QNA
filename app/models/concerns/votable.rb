@@ -28,13 +28,12 @@ module Votable
   def unvote(user)
     votes.find_by(user: user).destroy if voted_by?(user)
   end
-  
+
   private
 
   def make_vote(user, value)
     votes.create({ user: user, value: value })
   end
-
 
   def voted_by?(user)
     votes.where(user: user).exists?

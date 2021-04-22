@@ -24,13 +24,13 @@ class Question < ApplicationRecord
     when nil
       all
     when 'active'
-      where(status: ['unanswered', 'active']).order(created_at: :desc) 
+      where(status: %w[unanswered active]).order(created_at: :desc)
     else
       where(status: status).order(created_at: :desc)
     end
   }
 
-  scope :filtered_by_starts_with, -> (search) { where("title LIKE ?", "#{search}%") }
+  scope :filtered_by_starts_with, ->(search) { where('title LIKE ?', "#{search}%") }
 
   scope :last_day_questions, -> { where(created_at: (Time.now - 24.hours)..Time.now) }
 

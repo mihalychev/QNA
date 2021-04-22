@@ -39,7 +39,7 @@ describe 'Question API', type: :request do
         %w[short_title created_time created_date].each do |attr|
           expect(question_response[attr]).to eq question.send(attr).as_json
         end
-      end      
+      end
 
       it 'contains short title' do
         expect(question_response['short_title']).to eq question.title.truncate(100)
