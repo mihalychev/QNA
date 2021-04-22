@@ -58,9 +58,9 @@ $(document).on('turbolinks:load', () => {
     const search_param = new URLSearchParams(url.search).get('search')
     const filter_status = $(e.target).data('filter') || null
     if (filter_status !== null) {
-      window.location = "/questions?status=" + filter_status + (search_param == null ? '' : `&search=${search_param}`)
+      window.location = "/questions" + (filter_status == null ? null : `?status=${filter_status}`) + (search_param == null ? '' : `&search=${search_param}`)
     } else {
-      window.location = "/questions" + (search_param == null ? '' : `?search=${search_param}`)
+      window.location = "/questions" + (search_param == null ? null : `?search=${search_param}`)
     }
   })
 })
