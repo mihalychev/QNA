@@ -6,4 +6,7 @@ $('.question-errors').html('<%= render 'shared/errors', resource: @question %>')
   $('form#edit-question-<%= @question.id %>').addClass('hidden')
   $('#question-content').removeClass('hidden')
   $('#edit-question').removeClass('hidden')
+  $('.question-' + <%=@question.id%> + '-body-files').html('<%= render 'shared/files', resource: @question, locals: { delete: false, place: "body" } %>')
+  $('.question-' + <%=@question.id%> + '-form-files').html('<%= render 'shared/files', resource: @question, locals: { delete: true, place: "form" } %>')
+  $(".question-" + <%=@question.id%> + "-body-files").removeClass('hidden')
 <% end %>

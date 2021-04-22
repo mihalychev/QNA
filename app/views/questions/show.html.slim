@@ -38,13 +38,13 @@ article class='px-3'
       .answer-errors
         = render 'shared/errors', resource: @answer
       = form_with model: [ @question, @answer ], class: 'form form_answer-create', method: 'post' do |f|
-        .mb-3#answer-body
+        .mb-3#add-answer-body
           div class='d-flex align-items-center py-1 px-2 border-left border-top border-right border-ccc'
             = link_to_add_association f, :links, partial: 'link_fields', class: 'fs-1 text-decoration-none text-muted mb-0 mr-3', id: 'add-answer-link' do
               = octicon "link", height: 16, fill: 'gray'
-            = f.label :files, class: 'fs-1 m-0 text-muted cursor-pointer' do
-              = octicon "file", height: 16, fill: 'gray'
-            = f.file_field :files, multiple: true, direct_upload: true, class: 'hidden'
-          = f.text_area :body, class: 'form-control'
-        / = render 'form_link', f: f
+          = f.text_area :body, class: 'form-control mb-2'
+          .file-upload
+            = f.label :files, 'Choose file'
+            span.answer-files No file
+            = f.file_field :files, multiple: true, direct_upload: true
         = f.submit 'Answer', class: 'btn btn-primary mx-auto mb-4'

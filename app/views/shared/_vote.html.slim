@@ -4,14 +4,14 @@
   data: { resource: resource.class.name.downcase, resource_id: resource.id })
 
   - if user_signed_in? && !current_user&.author_of?(resource)
-    span class="cursor-pointer vote-up #{'voted' if resource.voted_by?(current_user, 1) }"
+    span class="cursor-pointer vote-up #{'voted' if resource.voted_by_with_value?(current_user, 1) }"
       = octicon("chevron-up", height: 48, 
-        fill: (resource.voted_by?(current_user, 1) ? 'black' : 'lightgray'))
+        fill: (resource.voted_by_with_value?(current_user, 1) ? 'black' : 'lightgray'))
         
   p class='text-center text-secondary fs-5 m-0' id='vote-value' style='width: 48px'
     = resource.total_votes
 
   - if user_signed_in? && !current_user&.author_of?(resource)
-    span class="cursor-pointer vote-down #{'voted' if resource.voted_by?(current_user, -1) }"
+    span class="cursor-pointer vote-down #{'voted' if resource.voted_by_with_value?(current_user, -1) }"
       = octicon("chevron-down", height: 48, 
-        fill: (resource.voted_by?(current_user, -1) ? 'black' : 'lightgray'))
+        fill: (resource.voted_by_with_value?(current_user, -1) ? 'black' : 'lightgray'))

@@ -1,0 +1,22 @@
+.question-errors
+  = render 'shared/errors', resource: question
+= form_with model: question, class: 'mb-3 hidden', method: 'patch', html: { id: "edit-question-#{question.id}" } do |f|
+  .mb-3
+    = f.label :title, class: 'form-label'
+    = f.text_field :title, class: 'form-control'
+  .mb-3#edit-question-body
+    = f.label :body, class: 'form-label'
+    div class='d-flex align-items-center py-1 px-2 border-left border-top border-right border-ccc'
+      = link_to_add_association f, :links, partial: 'link_fields', class: 'fs-1 text-decoration-none text-muted mb-0 mr-3', id: 'add-question-link'
+        = octicon "link", height: 16, fill: 'gray'
+    = f.text_area :body, class: 'form-control mb-2'
+    .file-upload
+      = f.label :files, 'Choose file'
+      span.question-files No file
+      = f.file_field :files, multiple: true, direct_upload: true, data: { model: 'question' }
+
+  = f.submit 'Save', class: 'btn btn-success mr-2 mb-3'
+  = link_to 'Close', '#', class: 'btn btn-secondary mb-3', id: 'edit-question-close', data: { question_id: question.id }
+
+  = render 'links/links',  resource: question, locals: { delete: true, place: 'form' }
+  = render 'shared/files', resource: question, locals: { delete: true, place: 'form' }

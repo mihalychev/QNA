@@ -3,16 +3,15 @@ $(document).on('turbolinks:load', () => {
     .data("association-insertion-method", 'after')
     .data("association-insertion-node", '#edit-question-body')
 
-  $("#add-answer-link")
-    .data("association-insertion-method", 'after')
-    .data("association-insertion-node", '#answer-body')
-
   $('#edit-question').on('click', function(e) {
     e.preventDefault()
     $(this).addClass('hidden')
     $('#question-content').addClass('hidden')
     const questionId = $(this).data('questionId')
     $('form#edit-question-' + questionId).removeClass('hidden')
+    $('form#edit-question-' + questionId + ' .direct-upload').remove()
+    $('form#edit-question-' + questionId + ' input[type="file"]').attr('disabled', false)
+    $(".question-" + questionId + "-body-files").addClass('hidden')
   })
 
   $('#edit-question-close').on('click', function(e) {
@@ -21,6 +20,8 @@ $(document).on('turbolinks:load', () => {
     $('form#edit-question-' + questionId).addClass('hidden')
     $('#question-content').removeClass('hidden')
     $('#edit-question').removeClass('hidden')
+    $('.edit-question[data-question-id=' + questionId + ']').parent().removeClass('hidden')
+    $(".question-" + questionId + "-body-files").removeClass('hidden')
   })
 
   $('#add-comment').on('click', function(e) {
@@ -49,5 +50,15 @@ $(document).on('turbolinks:load', () => {
     $('#comment-' + commentId + ' form').addClass('hidden')
     $('#comment-' + commentId + ' .comment-body').removeClass('hidden')
     $('.edit-comment[data-comment-id=' + commentId + ']').removeClass('hidden')
+  })
+
+  $('.filter').on('click', (e) => {
+    e.preventDefault()
+    const filter_status = $(e.target).data('filter') || null
+    if (filter_status !== null) {
+      window.location = "/questions?status=" + filter_status
+    } else {
+      window.location = "/questions"
+    }
   })
 })

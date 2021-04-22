@@ -11,7 +11,8 @@ class QuestionsController < ApplicationController
   authorize_resource
 
   def index
-    @questions = Question.all
+    @status = params[:status]
+    @questions = Question.filtered_by_status(@status)
   end
 
   def show

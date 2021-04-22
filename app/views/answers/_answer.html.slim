@@ -13,51 +13,47 @@
       - if current_user&.author_of?(answer.question) && !answer.best?
         = link_to best_answer_path(answer), method: 'patch', data: { answer_id: answer.id }, class: 'best-toggle text-center', style: 'width: 48px', remote: true do
           = octicon "check", height: 36, fill: 'lightgray'
+    div class='w-100'
+      div class='h-100 d-flex flex-column justify-content-between'
+        div class='d-flex justify-content-between'
+          div class='fs-2 py-1 mr-3' id="answer-#{answer.id}-content"
+            = answer.body
+          - if can? :update, answer
+            = form_with model: answer, class: 'w-100 hidden', method: 'patch', html: { id: "edit-answer-#{answer.id}" } do |f|
+              div class="mb-2 edit-answer-body"
+                div class='d-flex align-items-center py-1 px-2 border-left border-top border-right border-ccc'
+                  = link_to_add_association f, :links, partial: 'link_fields', class: "edit-answer-link fs-1 text-decoration-none text-muted mb-0 mr-3"
+                    = octicon "link", height: 16, fill: 'gray'
+                = f.text_area :body, class: 'form-control mb-2'
+                .file-upload
+                  = f.label :files, 'Choose file'
+                  span.answer-files No file
+                  = f.file_field :files, multiple: true, direct_upload: true, data: { model: 'answer' }
+              = f.submit 'Save', class: 'btn btn-success mr-2 mb-3'
+              = link_to 'Close', '#', class: 'edit-answer-close btn btn-secondary mb-3', data: { answer_id: answer.id }
+              = render 'links/links',  resource: answer, locals: { delete: true, place: 'form' }
+              = render 'shared/files', resource: answer, locals: { delete: true, place: 'form' }
 
-    p class='fs-2 py-1 pr-5 w-100' id="answer-#{answer.id}-content"
-      = answer.body
-    - if answer.files.attached?
-      - answer.files.each do |file|
-        p class="file-#{file.id}"
-          = link_to file.filename.to_s, url_for(file)
-    - if answer.links.presence
-      .links
-        ul
-          - answer.links.each do |link|
-            li id="link-#{link.id}"
-              - if link.gist?
-                = link.name
-                script src="#{link.url}.js"
-              -else
-                = link_to link.name, link.url
-              - if can? :destroy, answer
-                = link_to 'Delete', link, method: 'delete', remote: true
-    - if can? :update, answer
-      = form_with model: answer, class: 'hidden', method: 'patch', html: { id: "edit-answer-#{answer.id}" } do |f|
-        p= f.text_area :body, class: 'form-control'
-        p
-          = f.label :files
-          = f.file_field :files, multiple: true, direct_upload: true
-        - if answer.files.attached?
-          - answer.files.each do |file|
-            p class="file-#{file.id}"
-              = link_to file.filename.to_s, url_for(file)
-              = link_to "Delete file", attachment_path(file), method: 'delete', remote: true
-        .new-link
-          = link_to_add_association 'add link', f, :links, partial: 'link_fields'
-        = f.submit 'Save', class: 'btn btn-success mr-2'
-        = link_to 'Close', '#', class: 'edit-answer-close btn btn-secondary', data: { answer_id: answer.id }
-      div class='position-absolute' style='top: 15px; right: 0'
-        = link_to '#', class: 'edit-answer mr-3', data: { answer_id: answer.id } do
-          = octicon "pencil", height: 20
-        = link_to answer, method: 'delete', remote: true, class: 'button button_delete-answer' do
-          = octicon "trash", height: 20
-    p class='position-absolute mb-0 badge badge-pill badge-primary fs-1' style='bottom: 8px; right: 0;'
-      = answer.user.email
-    .answer-comments id="answer-comments-#{answer.id}"
-      .answer-comment-errors
-        = render 'shared/errors', resource: @comment
-      ul class='answer-comments__list'
-        = render answer.comments.comments_asc
-      - if user_signed_in?  
-        = render 'comments/form', commentable: answer, comment: Comment.new
+          - if can? :update, answer
+            div class='d-flex'
+              = link_to '#', class: 'edit-answer mr-3', data: { answer_id: answer.id } do
+                = octicon "pencil", height: 20
+              = link_to answer, method: 'delete', remote: true, class: 'button button_delete-answer' do
+                = octicon "trash", height: 20
+        div class='d-flex justify-content-between align-items-center'
+          div id="answer-#{answer.id}-attachments"
+            = render 'links/links',  resource: answer, locals: { delete: false, place: "body" }
+            = render 'shared/files', resource: answer, locals: { delete: false, place: 'body' }
+          div class='d-flex flex-column mb-0'
+            p.m-0
+              = "#{answer.created_time} #{answer.created_date}"
+            p class='badge badge-pill badge-primary fs-1'
+              = answer.user.email
+      
+      .answer-comments id="answer-comments-#{answer.id}"
+        .answer-comment-errors
+          = render 'shared/errors', resource: @comment
+        ul class='answer-comments__list'
+          = render answer.comments.comments_asc
+        - if user_signed_in?  
+          = render 'comments/form', commentable: answer, comment: Comment.new

@@ -1,8 +1,15 @@
 $('.answer-errors').html('<%= render 'shared/errors', resource: @answer %>')
 
+// TODO: close link form after edit, render several links after in update
+
 <% unless @answer.errors.present? %>
-  $('.edit-answer[data-answer-id=' + <%=@answer.id%> + ']').removeClass('hidden')
+  $('.edit-answer[data-answer-id=' + <%=@answer.id%> + ']').parent().removeClass('hidden')
+  $('form#edit-answer-' + <%=@answer.id%>).addClass('hidden')
   $('#answer-' + <%=@answer.id%> + '-content').html('<%= @answer.body %>')
   $('#answer-' + <%=@answer.id%> + '-content').removeClass('hidden')
-  $('form#edit-answer-' + <%=@answer.id%>).addClass('hidden')
+  $('.answer-' + <%=@answer.id%> + '-body-links').html('<%= render 'links/links', resource: @answer, locals: { delete: false, place: "body" } %>')
+  $('.answer-' + <%=@answer.id%> + '-form-links').html('<%= render 'links/links', resource: @answer, locals: { delete: true, place: "form" } %>')
+  $('.answer-' + <%=@answer.id%> + '-body-files').html('<%= render 'shared/files', resource: @answer, locals: { delete: false, place: "body" } %>')
+  $('.answer-' + <%=@answer.id%> + '-form-files').html('<%= render 'shared/files', resource: @answer, locals: { delete: true, place: "form" } %>')
+  $("#answer-" + <%=@answer.id%> + "-attachments").removeClass('invisible')
 <% end %>

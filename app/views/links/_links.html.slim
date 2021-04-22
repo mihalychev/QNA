@@ -1,0 +1,8 @@
+- if resource.links.presence
+    div class="d-flex fs-1 #{resource.class.name.downcase}-#{resource.id}-#{locals[:place]}-links #{locals[:place] == 'form' ? 'flex-column' : ''}"
+      - resource.links.each do |link|
+        div class="mr-1 mb-1" id="link-#{link.id}"
+            = link_to link.name, link.url, class: 'mr-2'
+            - if locals[:delete]
+              = link_to link, method: 'delete', remote: true do
+                = octicon "trashcan", height: 12

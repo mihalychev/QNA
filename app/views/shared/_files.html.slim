@@ -1,0 +1,11 @@
+div class="d-flex fs-1 #{resource.class.name.downcase}-#{resource.id}-#{locals[:place]}-files #{locals[:place] == 'form' ? 'flex-column' : ''}"
+  - if resource.files.attached?
+    - resource.files.each do |file|
+      div class="file-#{file.id} mr-2 mb-2"
+        = link_to(file.filename.to_s.length > 20 ? file.filename.to_s.first(100) + '...' : file.filename.to_s,
+                  url_for(file),
+                  target: "_blank",
+                  class: 'mr-2')
+        - if locals[:delete]
+          = link_to attachment_path(file), method: 'delete', remote: true do
+            = octicon "trashcan", height: 12

@@ -17,8 +17,8 @@ describe 'Question API', type: :request do
     end
 
     context 'authorized' do
-      let!(:questions) { create_list(:question, 2) }
-      let(:question) { questions.first }
+      let!(:questions) { create_pair(:question) }
+      let(:question) { questions.last }
       let(:question_response) { json['questions'].first }
 
       before { get api_path, params: { access_token: access_token.token }, headers: headers }
@@ -30,13 +30,19 @@ describe 'Question API', type: :request do
       end
 
       it 'returns all public fields' do
-        %w[title body user_id created_at updated_at].each do |attr|
+        %w[title body].each do |attr|
           expect(question_response[attr]).to eq question.send(attr).as_json
         end
       end
 
+      it 'returns custom fields' do
+        %w[short_title created_time created_date].each do |attr|
+          expect(question_response[attr]).to eq question.send(attr).as_json
+        end
+      end      
+
       it 'contains short title' do
-        expect(question_response['short_title']).to eq question.title.truncate(7)
+        expect(question_response['short_title']).to eq question.title.truncate(100)
       end
     end
   end
