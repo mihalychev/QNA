@@ -1,7 +1,7 @@
 - if answer.persisted?
   li class='list-group-item px-0 py-3 d-flex position-relative' id="answer-#{answer.id}"
 
-    div class="d-flex flex-column align-items-center #{ 'pr-2 mr-3 border-right' if !current_user&.author_of?(answer) || current_user&.author_of?(answer.question) || answer.best?}"
+    div class="d-flex flex-column align-items-center #{ 'pr-2 mr-3 border-right' if !current_user&.author_of?(answer) || current_user&.author_of?(answer.question) || current_user&.author_of?(answer) || answer.best?}"
       = render 'shared/vote', resource: answer
       - if !current_user&.author_of?(answer.question) && answer.best?
         div class='text-center' style='width: 48px'
@@ -36,7 +36,7 @@
 
           - if can? :update, answer
             div class='d-flex'
-              = link_to '#', class: 'edit-answer mr-3', data: { answer_id: answer.id } do
+              = link_to '', class: 'edit-answer mr-3', remote: true, data: { answer_id: answer.id } do
                 = octicon "pencil", height: 20
               = link_to answer, method: 'delete', remote: true, class: 'button button_delete-answer' do
                 = octicon "trash", height: 20

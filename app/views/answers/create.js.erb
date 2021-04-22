@@ -4,4 +4,14 @@ $('.answer-errors').html('<%= render 'shared/errors', resource: @answer %>')
   $('#answers-count').html("<%= @question.answers.count %> Answers")
   $('#answers-list').append('<%= j render @answer %>')
   $('.form_answer-create #answer_body').val('')
+
+  $('.edit-answer').on('click', function(e) {
+    e.preventDefault()
+    $(this).parent().addClass('hidden')
+    $('#answer-' + <%= @answer.id %> + '-content').addClass('hidden')
+    $('form#edit-answer-' + <%= @answer.id %>).removeClass('hidden')
+    $('form#edit-answer-' + <%= @answer.id %> + ' .direct-upload').remove()
+    $('form#edit-answer-' + <%= @answer.id %> + ' input[type="file"]').attr('disabled', false)
+    $("#answer-" + <%= @answer.id %> + "-attachments").addClass('invisible')
+  })
 <% end %>
