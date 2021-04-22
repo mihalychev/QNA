@@ -21,6 +21,7 @@ gem 'bootsnap', '>= 1.4.2', require: false
 gem 'cancancan'
 gem 'cocoon'
 gem 'devise'
+gem 'devise-encryptable'
 gem 'doorkeeper'
 gem 'gon'
 gem 'octicons_helper'
