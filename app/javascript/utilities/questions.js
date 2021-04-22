@@ -54,11 +54,13 @@ $(document).on('turbolinks:load', () => {
 
   $('.filter').on('click', (e) => {
     e.preventDefault()
+    const url = new URL(window.location)
+    const search_param = new URLSearchParams(url.search).get('search')
     const filter_status = $(e.target).data('filter') || null
     if (filter_status !== null) {
-      window.location = "/questions?status=" + filter_status
+      window.location = "/questions?status=" + filter_status + (search_param == null ? '' : `&search=${search_param}`)
     } else {
-      window.location = "/questions"
+      window.location = "/questions" + (search_param == null ? '' : `?search=${search_param}`)
     }
   })
 })

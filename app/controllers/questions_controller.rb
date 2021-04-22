@@ -11,8 +11,9 @@ class QuestionsController < ApplicationController
   authorize_resource
 
   def index
+    @search = params[:search] || ''
     @status = params[:status]
-    @questions = Question.filtered_by_status(@status)
+    @questions = Question.filtered_by_status(@status).filtered_by_starts_with(@search)
   end
 
   def show

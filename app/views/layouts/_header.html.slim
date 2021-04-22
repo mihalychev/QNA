@@ -6,10 +6,6 @@ nav class="navbar navbar-expand-lg navbar-dark bg-primary"
       ul class="navbar-nav mr-auto"
         li class="nav-item mr-3 fs-2 active"
           = link_to "Home", root_path, class: 'text-light'
-      form class="form-inline my-2 my-lg-0"
-        input class="form-control mr-sm-2" type="text" placeholder="Search"
-        button class="btn btn-secondary my-2 my-sm-0" type="submit"
-          = 'Search'
     
     .user
       - if current_user

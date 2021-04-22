@@ -23,7 +23,7 @@ class Question < ApplicationRecord
     status.present? ? where(status: status).order(created_at: :desc) : all
   }
 
-  # scope :filtered_by_starts_with, -> (search) {  }
+  scope :filtered_by_starts_with, -> (search) { where("title LIKE ?", "#{search}%") }
 
   scope :last_day_questions, -> { where(created_at: (Time.now - 24.hours)..Time.now) }
 

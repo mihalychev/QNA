@@ -3,11 +3,16 @@ div class='d-flex justify-content-between align-items-center px-4 mb-4'
   - if can? :create, Question
     =link_to "Ask question", new_question_path, class: 'btn btn-primary'
 div class='d-flex justify-content-between align-items-center px-4'
-  span class='fs-3'
+  span class='fs-3 mr-3'
     = "#{@questions.count} questions"
-  div class="d-flex justify-content-between align-items-center"
-    = link_to 'Newest',     questions_path, class: "filter btn btn-secondary #{ 'active' if @status == nil }"
-    = link_to 'Unanswered', questions_path, class: "filter btn btn-secondary #{ 'active' if @status == 'unanswered' }", data: { filter: 'unanswered' }
-    = link_to 'Active',     questions_path, class: "filter btn btn-secondary #{ 'active' if @status == 'active' }",     data: { filter: 'active' }
-    = link_to 'Closed',     questions_path, class: "filter btn btn-secondary #{ 'active' if @status == 'closed' }",     data: { filter: 'closed' }
+  form action="#{questions_path}" method='get' class="form-inline my-2 my-lg-0 d-flex align-items-center"
+    div class='mr-2'
+      = check_box_tag :status, @status || '', true, class: 'hidden'
+      = link_to 'Newest',     questions_path, class: "filter btn btn-secondary #{ 'active' if @status == nil }"
+      = link_to 'Unanswered', questions_path, class: "filter btn btn-secondary #{ 'active' if @status == 'unanswered' }", data: { filter: 'unanswered' }
+      = link_to 'Active',     questions_path, class: "filter btn btn-secondary #{ 'active' if @status == 'active' }",     data: { filter: 'active' }
+      = link_to 'Closed',     questions_path, class: "filter btn btn-secondary #{ 'active' if @status == 'closed' }",     data: { filter: 'closed' }
+    input name='search' class="form-control" type="text" placeholder="Search" value="#{@search}"
+    button class="btn btn-secondary my-2 my-sm-0" type="submit" Search
+
 = render partial: 'questions_list', locals: { questions: @questions }
