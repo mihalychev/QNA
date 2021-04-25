@@ -2,18 +2,28 @@ div class='d-flex justify-content-between align-items-center px-4 mb-4'
   h2 All Questions
   - if can? :create, Question
     =link_to "Ask question", new_question_path, class: 'btn btn-primary'
-div class='d-flex justify-content-between align-items-center px-4'
-  span class='fs-3 mr-3'
+div class='d-flex justify-content-between align-items-start px-4 mb-2'
+  span class='fs-3 py-1'
     = "#{@questions.count} questions"
-  form action="#{questions_path}" method='get' class="form-inline my-2 my-lg-0 d-flex align-items-center"
-    div class='mr-2'
-      - if @status.present?
-        = check_box_tag :status, @status, true, class: 'hidden'
-      = link_to 'Newest',     questions_path, class: "filter btn btn-secondary #{ 'active' if @status == nil }"
-      = link_to 'Unanswered', questions_path, class: "filter btn btn-secondary #{ 'active' if @status == 'unanswered' }", data: { filter: 'unanswered' }
-      = link_to 'Active',     questions_path, class: "filter btn btn-secondary #{ 'active' if @status == 'active' }",     data: { filter: 'active' }
-      = link_to 'Closed',     questions_path, class: "filter btn btn-secondary #{ 'active' if @status == 'closed' }",     data: { filter: 'closed' }
-    input name='search' class="form-control" type="text" placeholder="Search" value="#{@search}"
-    button class="btn btn-secondary my-2 my-sm-0" type="submit" Search
-
+  div class='d-flex'
+    = link_to 'Newest',     questions_path, class: "filter btn btn-secondary #{ 'active' if @status == nil }"
+    = link_to 'Unanswered', questions_path, class: "filter btn btn-secondary #{ 'active' if @status == 'unanswered' }", data: { filter: 'unanswered' }
+    = link_to 'Active',     questions_path, class: "filter btn btn-secondary #{ 'active' if @status == 'active' }",     data: { filter: 'active' }
+    = link_to 'Closed',     questions_path, class: "filter btn btn-secondary #{ 'active' if @status == 'closed' }",     data: { filter: 'closed' }
+    button class='toggle-advanced btn btn-info text-dark d-flex align-items-center' 
+      = 'Advanced'
+      = octicon "grabber", height: 20
+form action="#{questions_path}" method='get' id='advanced' class="row mx-4 my-2 my-lg-0 border border-body bg-light hidden"
+  - if @status.present?
+    = check_box_tag :status, @status, true, class: 'hidden'
+  div class='col-12 pt-3 mb-3'
+    label for='seacrh' Question starts with
+    input id='search' name='search' class="form-control" type="text" placeholder="Type here..." value="#{@search}"
+  div class='col-12 pb-3 mb-3 border-bottom border-body'
+    label for='category' Choose category
+    = select_tag :category, options_for_select(Category.show_all, params[:category]), prompt: 'Category', class: 'form-control mr-2', id: 'category'
+  div class='col-12 pb-3 d-flex justify-content-between'
+    button class="btn btn-success px-3 my-2 my-sm-0" type="submit" Apply
+    button class='toggle-advanced btn btn-link px-3' Cancel
+hr class='border-body mb-0'
 = render partial: 'questions_list', locals: { questions: @questions }

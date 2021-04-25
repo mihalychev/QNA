@@ -9,6 +9,7 @@ RSpec.describe QuestionsController, type: :controller do
   let(:user) { create(:user) }
   let(:question) { create(:question, user: user) }
   let(:user2) { create(:user) }
+  let(:category) { create(:category) }
 
   describe 'GET #index' do
     let(:questions) { create_list(:question, 3) }
@@ -67,7 +68,7 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'POST #create' do
     describe 'Authenticated user' do
       subject(:params) do
-        { params: { question: attributes_for(:question) } }
+        { params: { question: attributes_for(:question).merge(category_id: category.id) } }
       end
       subject(:params_invalid) do
         { params: { question: attributes_for(:question, :invalid) } }
@@ -81,7 +82,7 @@ RSpec.describe QuestionsController, type: :controller do
         end
 
         it 'redirects to show view' do
-          post :create, params: { question: attributes_for(:question) }
+          post :create, params
           expect(response).to redirect_to assigns(:question)
         end
       end

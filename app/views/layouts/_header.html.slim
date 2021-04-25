@@ -1,12 +1,10 @@
 nav class="navbar navbar-expand-lg navbar-dark bg-primary"
   .container
-    h1 class='text-light mb-0 mr-3'
-      = 'Q&A'
-    div class="collapse navbar-collapse px-4"
-      ul class="navbar-nav mr-auto"
-        li class="nav-item mr-3 fs-2 active"
-          = link_to "Home", root_path, class: 'text-light'
-    
+    h1 class='text-light mb-0 mr-4' Q&A
+    ul class="navbar-nav mr-auto"
+      li class="nav-item mr-3 fs-2 active"
+        = link_to "Home", root_path, class: 'text-light'
+
     .user
       - if current_user
         = link_to 'Logout', destroy_user_session_path, method: 'delete', class: "fs-2 text-light"

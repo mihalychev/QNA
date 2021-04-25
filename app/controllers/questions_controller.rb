@@ -13,7 +13,10 @@ class QuestionsController < ApplicationController
   def index
     @search = params[:search] || ''
     @status = params[:status]
-    @questions = Question.filtered_by_status(@status).filtered_by_starts_with(@search)
+    @category = params[:category]
+    @questions = Question.filtered_by_status(@status)
+                         .filtered_by_starts_with(@search)
+                         .filtered_by_category(@category)
   end
 
   def show
@@ -55,6 +58,7 @@ class QuestionsController < ApplicationController
     params.require(:question).permit(
       :title,
       :body,
+      :category_id,
       files: [],
       links_attributes: [:id, :name, :url, :_destroy, { user: current_user }]
     )

@@ -52,15 +52,27 @@ $(document).on('turbolinks:load', () => {
     $('.edit-comment[data-comment-id=' + commentId + ']').removeClass('hidden')
   })
 
+  $('.toggle-advanced').on('click', e => {
+    e.preventDefault()
+    $('#advanced').toggleClass('hidden')
+  })
+
   $('.filter').on('click', (e) => {
     e.preventDefault()
     const url = new URL(window.location)
-    const search_param = new URLSearchParams(url.search).get('search')
+    const url_param = new URLSearchParams(url.search)
+    const search_param   = url_param.get('search')
+    const category_param = url_param.get('category')
     const filter_status = $(e.target).data('filter') || null
     if (filter_status !== null) {
-      window.location = "/questions" + (filter_status == null ? null : `?status=${filter_status}`) + (search_param == null ? '' : `&search=${search_param}`)
+      window.location = "/questions" + 
+        (filter_status == null ? '' : `?status=${filter_status}`) +
+        (search_param == null ? '' : `&search=${search_param}`) +
+        (category_param == null ? '' : `&category=${category_param}`)
     } else {
-      window.location = "/questions" + (search_param == null ? null : `?search=${search_param}`)
+      window.location = "/questions" +
+        (search_param == null ? '' : `?search=${search_param}`) +
+        (category_param == null ? '' : `&category=${category_param}`)
     }
   })
 })

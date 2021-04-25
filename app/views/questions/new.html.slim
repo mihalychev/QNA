@@ -10,10 +10,13 @@ h1 class='text-center mb-5'
   div class='w-50 mb-3'
     = f.label :body, class: 'form-label'
     = f.text_area :body, class: 'form-control'
-  div class='w-50 file-upload mb-3'
+  div class='w-50 mb-4'
+    = f.label :category_id, 'Category', class: 'mr-1'
+    = f.select :category_id, options_for_select(Category.show_all), { prompt: 'Select' }, { class: 'form-control' }
+  div class='w-50 file-upload mb-2'
       = f.label :files, 'Choose file'
       span.question-files No file
-      = f.file_field :files, multiple: true, direct_upload: true
+      = f.file_field :files, multiple: true, direct_upload: true, data: { model: 'question' }
   div class='w-50'
     = render 'form_link', f: f
   

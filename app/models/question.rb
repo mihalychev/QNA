@@ -5,6 +5,7 @@ class Question < ApplicationRecord
   include Commentable
 
   belongs_to :user
+  belongs_to :category
 
   has_many :answers, dependent: :destroy
   has_many :links, dependent: :destroy, as: :linkable
@@ -18,6 +19,8 @@ class Question < ApplicationRecord
   validates :body,  presence: true
 
   default_scope { order(created_at: :desc) }
+
+  scope :filtered_by_category, ->(category) { where(category: category) unless category.blank? }
 
   scope :filtered_by_status, lambda { |status = nil|
     case status

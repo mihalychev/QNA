@@ -45,7 +45,7 @@ module Api
       end
 
       def question_params
-        params.require(:question).permit(:title, :body, links_attributes: %i[id name url _destroy])
+        params.require(:question).permit(:title, :body, :category_id, links_attributes: %i[id name url _destroy])
       end
     end
   end

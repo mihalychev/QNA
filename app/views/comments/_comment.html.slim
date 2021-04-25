@@ -14,4 +14,4 @@ li class='list-group-item pt-2 pb-4 pl-3 pr-5 position-relative' id="comment-#{c
       = link_to '#', class: 'edit-comment mr-2', data: { comment_id: comment.id } do
         = octicon "pencil", height: 16
       = link_to comment, method: :delete, remote: true do
-        = octicon "trashcan", height: 16
+        = octicon "trash", height: 16

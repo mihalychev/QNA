@@ -6,6 +6,7 @@ describe 'Question API', type: :request do
   let(:headers) { { 'ACCEPT' => 'application/json' } }
   let(:user) { create :user }
   let(:other_user) { create :user }
+  let(:category) { create :category }
   let(:access_token) { create(:access_token, resource_owner_id: user.id) }
   let(:other_access_token) { create(:access_token, resource_owner_id: other_user.id) }
 
@@ -88,7 +89,11 @@ describe 'Question API', type: :request do
 
       context 'with valid attributes' do
         subject(:params) do
-          { params: { access_token: access_token.token, question: attributes_for(:question), headers: headers } }
+          { params: {
+            access_token: access_token.token,
+            question: attributes_for(:question).merge(category_id: category.id),
+            headers: headers
+          } }
         end
 
         let(:request) do

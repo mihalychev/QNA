@@ -1,16 +1,22 @@
 ul class='list-group list-group-flush px-3' id='question-list'
   - questions.each do |q|
-    li class="list-group-item py-3 d-flex align-items-center" id="question-#{q.id}"
-      div class='d-flex flex-column align-items-center justify-content-center fs-4'
-        p class='m-0' style='line-height: 1.8rem' 
-          = q.total_votes
+    li class="list-group-item py-3 d-flex align-items-start" id="question-#{q.id}"
+      div class='d-flex flex-column align-items-center justify-content-center fs-1'
+        div class='d-flex flex-column align-items-center mb-2' 
+          span class='mb-0' = q.total_votes
+          span class='mb-0' = 'votes'
+        div class='d-flex flex-column align-items-center mb-2' 
+          span class='mb-0' = q.answers.count
+          span class='mb-0' = 'answers'
         - if q.with_best_answer?
           = octicon "check", height: 16, fill: 'green'
-      div class='flex-grow-1 py-2 px-3'
-        = link_to q.title, q, class: 'fs-3 text-decoration-none', style: "line-height: 1.8rem"
-        p class='m-0 p-0 fs-2'
-          = q.body.length > 100 ? q.body.first(100) + '...' : q.body 
-      div class='text-secondary'
+      div class='align-self-stretch d-flex flex-column align-items-start justify-content-between flex-grow-1 px-3'
+        div
+          = link_to q.title, q, class: 'd-block fs-3 mb-1 text-decoration-none'
+          p class='mx-0 mt-0 mb-2 p-0 fs-2'
+            = q.body.length > 100 ? q.body.first(100) + '...' : q.body
+        span class='badge bg-secondary' = q.category.title
+      div class='align-self-end text-secondary'
         p class='p-0 m-0 text-center'
           = q.created_time
         p class='p-0 m-0'

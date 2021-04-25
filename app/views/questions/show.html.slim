@@ -46,5 +46,5 @@ article class='px-3'
           .file-upload
             = f.label :files, 'Choose file'
             span.answer-files No file
-            = f.file_field :files, multiple: true, direct_upload: true
+            = f.file_field :files, multiple: true, direct_upload: true, data: { model: 'answer' }
         = f.submit 'Answer', class: 'btn btn-primary mx-auto mb-4'
