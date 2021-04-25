@@ -28,7 +28,7 @@ article class='px-3'
           = render 'comments/form', commentable: @question, comment: Comment.new
 
   section class='px-5'
-    h4 class='px-2 mb-3 fs-5' id='answers-count'
+    h4 class='px-2 mb-3 fs-4' id='answers-count'
       = "#{@question.answers.count} Answers"
     ul class='list-group list-group-flush mb-3' id='answers-list'
       = render @question.answers.sorted_answers

@@ -5,14 +5,14 @@
       = render 'shared/vote', resource: answer
       - if !current_user&.author_of?(answer.question) && answer.best?
         div class='text-center' style='width: 48px'
-          = octicon "check", height: 36, fill: 'green'
+          = octicon "check", height: 30, fill: 'green'
 
       - if current_user&.author_of?(answer.question) && answer.best?
         = link_to best_answer_path(answer), method: 'patch', data: { answer_id: answer.id }, class: 'best-toggle text-center', style: 'width: 48px', remote: true do
-          = octicon "check", height: 36, fill: 'green'
+          = octicon "check", height: 30, fill: 'green'
       - if current_user&.author_of?(answer.question) && !answer.best?
         = link_to best_answer_path(answer), method: 'patch', data: { answer_id: answer.id }, class: 'best-toggle text-center', style: 'width: 48px', remote: true do
-          = octicon "check", height: 36, fill: 'lightgray'
+          = octicon "check", height: 30, fill: 'lightgray'
     div class='w-100'
       div class='h-100 d-flex flex-column justify-content-between'
         div class='d-flex justify-content-between'

@@ -8,13 +8,13 @@ html lang="en"
     = stylesheet_link_tag "https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/yeti/bootstrap.min.css" 
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
-  body
+  body class='bg-secondary'
     = render 'layouts/header'
 
-    main class='container'
-      .text-center.pt-3.mb-2
-        p class='notice text-info'
+    main class='container border rounded bg-white pb-4'
+      div class='text-center mt-2 mb-2'
+        p class='notice text-info p-0'
           = notice
-        p class='alert text-danger'
+        p class='alert text-danger p-0'
           = alert
       = yield

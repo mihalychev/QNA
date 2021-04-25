@@ -10,7 +10,7 @@ ul class='list-group list-group-flush px-3' id='question-list'
           span class='mb-0' = 'answers'
         - if q.with_best_answer?
           = octicon "check", height: 16, fill: 'green'
-      div class='align-self-stretch d-flex flex-column align-items-start justify-content-between flex-grow-1 px-3'
+      div class='flex-grow-1 px-3'
         div
           = link_to q.title, q, class: 'd-block fs-3 mb-1 text-decoration-none'
           p class='mx-0 mt-0 mb-2 p-0 fs-2'
