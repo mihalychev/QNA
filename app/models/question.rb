@@ -15,8 +15,16 @@ class Question < ApplicationRecord
 
   accepts_nested_attributes_for :links, reject_if: :all_blank, allow_destroy: true
 
-  validates :title, presence: true
-  validates :body,  presence: true
+  validates :title, presence: true,
+                    length: {
+                      maximum: 100,
+                      too_long: "#{count} characters is the maximum allowed for question title!"
+                    }
+  validates :body,  presence: true,
+                    length: {
+                      maximum: 1000,
+                      too_long: "#{count} characters is the maximum allowed for question body!"
+                    }
 
   default_scope { order(created_at: :desc) }
 
