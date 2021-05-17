@@ -13,7 +13,7 @@ class Answer < ApplicationRecord
 
   accepts_nested_attributes_for :links, reject_if: :all_blank, allow_destroy: true
 
-  validates :body, presence: true
+  validates :body, presence: true, length: { maximum: 200 }
 
   scope :sorted_answers, -> { left_joins(:votes).group(:id).order('best desc, count(votes) desc, created_at desc') }
 
