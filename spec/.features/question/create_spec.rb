@@ -6,6 +6,7 @@ feature 'User can create question', %q{
 } do
 
   given(:user) { create(:user) }
+  given!(:category) { create(:category) }
 
   describe 'Authenticated user' do
     background do
@@ -18,15 +19,16 @@ feature 'User can create question', %q{
     scenario 'asks a question' do
       fill_in 'Title', with: 'Title'
       fill_in 'Body', with: 'Body'
+      select category.title, from: 'Category'
       click_on 'Ask'
   
       expect(page).to have_content 'Your question successfully created.'
       
-      within '.question__title' do
+      within '#question-title' do
         expect(page).to have_content 'Title'
       end
 
-      within '.question__body' do
+      within '#question-body' do
         expect(page).to have_content 'Body'
       end
     end
@@ -34,7 +36,8 @@ feature 'User can create question', %q{
     scenario 'asks a question with attached file' do
       fill_in 'Title', with: 'Title'
       fill_in 'Body', with: 'Body'
-      attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+      select category.title, from: 'Category'
+      attach_file 'Choose file', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
       click_on 'Ask'
 
       expect(page).to have_link 'rails_helper.rb'
@@ -51,9 +54,8 @@ feature 'User can create question', %q{
   describe 'Unauthenticated user' do
     scenario 'tries to ask a question' do
       visit questions_path
-      click_on 'Ask question'
   
-      expect(page).to have_content 'You need to sign in or sign up before continuing.'
+      expect(page).to_not have_content 'Ask question'
     end
   end
 
@@ -72,12 +74,13 @@ feature 'User can create question', %q{
         click_on 'Ask question'
         fill_in 'Title', with: 'Title'
         fill_in 'Body', with: 'Body'
+        select category.title, from: 'Category'
         click_on 'Ask'
 
-        within '.question__title' do
+        within '#question-title' do
           expect(page).to have_content 'Title'
         end
-        within '.question__body' do
+        within '#question-body' do
           expect(page).to have_content 'Body'
         end
       end
