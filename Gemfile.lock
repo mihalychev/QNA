@@ -188,9 +188,9 @@ GEM
     pg (1.2.3-x64-mingw32)
     pg (1.2.3-x86-mingw32)
     public_suffix (4.0.6)
-    puma (4.3.7)
+    puma (4.3.8)
       nio4r (~> 2.0)
-    puma (4.3.7-java)
+    puma (4.3.8-java)
       nio4r (~> 2.0)
     racc (1.5.2)
     racc (1.5.2-java)
@@ -385,7 +385,7 @@ DEPENDENCIES
   octicons_helper
   oj
   pg (>= 0.18, < 2.0)
-  puma (~> 4.1)
+  puma (~> 4.3)
   rails (~> 6.0.3, >= 6.0.3.2)
   rails-controller-testing
   redis
